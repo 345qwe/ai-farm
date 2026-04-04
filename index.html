@@ -3603,7 +3603,13 @@ input:checked + .slider-toggle:before {
         document.getElementById('retakeExpertBtn').style.display = 'none';
         document.getElementById('useExpertBtn').style.display = 'none';
     }
-    
+     document.querySelectorAll('.slider').forEach(s => {
+    s.style.background = '#e0e0e0';
+    s.addEventListener('input', function() {
+        let percent = (this.value - this.min) / (this.max - this.min) * 100;
+        this.style.background = `linear-gradient(90deg, #2e7d32 0%, #2e7d32 ${percent}%, #e0e0e0 ${percent}%, #e0e0e0 100%)`;
+    });
+});
     </script>
    
     
