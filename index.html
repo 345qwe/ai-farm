@@ -1,0 +1,3611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI农场首席运营官 - 智慧农业综合平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <style>
+   :root {
+    --primary: #2e7d32;
+    --primary-light: #4caf50;
+    --primary-dark: #1b5e20;
+    --secondary: #ff9800;
+    --accent: #2196f3;
+    --ai-purple: #7e57c2;
+    --text: #1f2d1d;
+    --text-light: #5a6e4a;
+    --background: linear-gradient(145deg, #f0f9ec 0%, #e8f3e0 100%);
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --shadow: 0 20px 35px -12px rgba(0, 32, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.02);
+    --shadow-hover: 0 25px 45px -12px rgba(0, 0, 0, 0.25);
+    --ai-glow: 0 0 20px rgba(126, 87, 194, 0.6);
+    --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', 'Poppins', 'Roboto', system-ui, sans-serif;
+}
+
+body {
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* 动态粒子背景效果 */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(76, 175, 80, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 60%, rgba(126, 87, 194, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 40% 80%, rgba(255, 152, 0, 0.06) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 漂浮装饰元素 */
+body::after {
+    content: '🌱🍃🌿';
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    font-size: 80px;
+    opacity: 0.08;
+    pointer-events: none;
+    animation: float-bounce 8s ease-in-out infinite;
+}
+
+@keyframes float-bounce {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-25px) rotate(5deg); }
+}
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+    max-width: 1600px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* 侧边栏 - 华丽升级 */
+.sidebar {
+    width: 280px;
+    background: linear-gradient(145deg, #0f3a1a, #2d1f4a, #1a2e3a);
+    backdrop-filter: blur(2px);
+    color: white;
+    padding: 2rem 1.2rem;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.2);
+    border-right: 1px solid rgba(255, 193, 7, 0.25);
+    transition: var(--transition);
+}
+
+.sidebar:hover {
+    box-shadow: 12px 0 40px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 2.8rem;
+    padding: 12px 16px;
+    background: linear-gradient(90deg, rgba(255, 152, 0, 0.15), transparent);
+    border-radius: 20px;
+    border-left: 3px solid var(--secondary);
+}
+
+.sidebar-logo i {
+    font-size: 2.5rem;
+    color: var(--secondary);
+    filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));
+    animation: icon-pulse 2s ease-in-out infinite;
+}
+
+@keyframes icon-pulse {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5)); }
+    50% { filter: drop-shadow(0 0 20px rgba(255, 152, 0, 0.8)); }
+}
+
+.sidebar-logo h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff, #ffb74d);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -0.5px;
+}
+
+.sidebar-menu {
+    list-style: none;
+    margin-top: 0.5rem;
+}
+
+.sidebar-menu li {
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #e8f0e5;
+    text-decoration: none;
+    padding: 14px 18px;
+    border-radius: 20px;
+    transition: var(--transition);
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.sidebar-menu a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.sidebar-menu a:hover::before {
+    left: 100%;
+}
+
+.sidebar-menu a:hover, .sidebar-menu a.active {
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), rgba(126, 87, 194, 0.2));
+    color: var(--secondary);
+    transform: translateX(6px);
+    backdrop-filter: blur(4px);
+}
+
+.sidebar-menu i {
+    width: 28px;
+    font-size: 1.3rem;
+    transition: transform 0.3s;
+}
+
+.sidebar-menu a:hover i {
+    transform: scale(1.1);
+}
+
+/* 主内容区域 */
+.main-content {
+    flex: 1;
+    margin-left: 280px;
+    padding: 2rem 2.5rem;
+    position: relative;
+}
+
+.page {
+    display: none;
+    animation: fadeSlideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 页面头部 */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(46, 125, 50, 0.3);
+}
+
+.page-header h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary-dark), var(--ai-purple), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    letter-spacing: -0.3px;
+}
+
+.ai-badge {
+    background: linear-gradient(120deg, var(--ai-purple), #9561e2);
+    padding: 6px 20px;
+    border-radius: 40px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    box-shadow: var(--ai-glow);
+    animation: shimmer 2s infinite;
+    color: #e0e0e0;
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 1; box-shadow: 0 0 15px rgba(126, 87, 194, 0.5); }
+    50% { opacity: 0.85; box-shadow: 0 0 25px rgba(126, 87, 194, 0.8); }
+}
+
+/* 卡片通用样式 - 玻璃态+渐变边框 */
+.dashboard-card, .risk-card, .device-card, .chart-container, .review-form-card, .recent-reviews-card, .upload-section, .analysis-section, .expert-info, .expert-chat {
+    background: var(--card-bg);
+    backdrop-filter: blur(2px);
+    border-radius: 32px;
+    padding: 1.8rem;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border: 1px solid rgba(76, 175, 80, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-card::before, .risk-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--ai-purple));
+}
+
+.dashboard-card:hover, .risk-card:hover, .device-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(76, 175, 80, 0.4);
+}
+
+/* 仪表板网格 */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+/* 指标数字特效 */
+.metric {
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary), var(--ai-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 1rem 0;
+}
+
+/* 进度条美化 */
+.progress-bar {
+    height: 12px;
+    background: linear-gradient(90deg, #e0ecd9, #d0e0c8);
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 0.8rem 0;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--ai-purple));
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    animation: progress-shine 1.5s infinite;
+}
+
+@keyframes progress-shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* AI洞察卡片 */
+.ai-insight {
+    background: linear-gradient(135deg, #e8f5e9, #dcecd5);
+    padding: 1rem;
+    border-radius: 20px;
+    margin-top: 1.2rem;
+    font-size: 0.95rem;
+    border-left: 4px solid var(--ai-purple);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+/* 风险卡片样式 */
+.risk-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.risk-card {
+    border-left: 6px solid;
+    padding: 1.8rem;
+}
+
+.risk-card.high { border-left-color: #e53935; background: linear-gradient(135deg, #fff, #fff5f5); }
+.risk-card.medium { border-left-color: #fb8c00; background: linear-gradient(135deg, #fff, #fffaf0); }
+.risk-card.low { border-left-color: #43a047; background: linear-gradient(135deg, #fff, #f0fff4); }
+
+.risk-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.risk-level {
+    padding: 5px 14px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.risk-level.high { background: #ffebee; color: #c62828; box-shadow: 0 0 8px rgba(229, 57, 53, 0.3); }
+.risk-level.medium { background: #fff3e0; color: #ef6c00; box-shadow: 0 0 8px rgba(251, 140, 0, 0.3); }
+.risk-level.low { background: #e8f5e9; color: #2e7d32; box-shadow: 0 0 8px rgba(67, 160, 71, 0.3); }
+
+/* 按钮样式 */
+.action-btn, .camera-btn, .scan-btn, .list-product-btn, .buy-btn {
+    padding: 10px 22px;
+    border-radius: 50px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.action-btn.primary, .camera-btn, .scan-btn, .list-product-btn, .buy-btn {
+    background: linear-gradient(135deg, var(--primary), var(--ai-purple));
+    color: white;
+    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+}
+
+.action-btn.primary::before, .camera-btn::before, .scan-btn::before, .buy-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.action-btn.primary:hover::before, .camera-btn:hover::before, .scan-btn:hover::before, .buy-btn:hover::before {
+    left: 100%;
+}
+
+.action-btn.primary:hover, .camera-btn:hover, .scan-btn:hover, .buy-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(46, 125, 50, 0.4);
+}
+
+.action-btn.secondary {
+    background: linear-gradient(135deg, #eef2ec, #e0e8da);
+    color: var(--text);
+}
+
+/* 模态框 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 750px;
+    max-height: 85vh;
+    border-radius: 40px;
+    overflow-y: auto;
+    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4);
+    animation: modalPop 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+@keyframes modalPop {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-dark), var(--ai-purple));
+    color: white;
+    padding: 1.5rem 2rem;
+    border-radius: 40px 40px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    transition: 0.2s;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.modal-body { padding: 2rem; }
+
+/* 评价页面星星样式 */
+.stars {
+    display: flex;
+    gap: 8px;
+    font-size: 2rem;
+    cursor: pointer;
+    margin: 1rem 0;
+}
+
+.star {
+    color: #ddd;
+    transition: 0.1s;
+    text-shadow: none;
+}
+
+.star.active, .star:hover {
+    color: #ffb300;
+    text-shadow: 0 0 10px rgba(255, 180, 0, 0.5);
+    transform: scale(1.1);
+}
+
+/* 聊天区域 */
+.expert-chat {
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-header {
+    background: linear-gradient(135deg, var(--primary), var(--ai-purple));
+    padding: 1.2rem;
+    text-align: center;
+    position: relative;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    background: linear-gradient(145deg, #fefef7, #f9fff5);
+}
+
+.message {
+    animation: messageSlide 0.3s ease-out;
+}
+
+@keyframes messageSlide {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.ai-message {
+    background: linear-gradient(135deg, #e8f5e9, #dcecd5);
+    border-bottom-left-radius: 5px;
+}
+
+.user-message {
+    background: linear-gradient(135deg, var(--primary), var(--ai-purple));
+    color: white;
+    border-bottom-right-radius: 5px;
+}
+
+/* 市场商品卡片 */
+.marketplace-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.8rem;
+    margin-top: 1.5rem;
+}
+
+.product-card {
+    background: white;
+    border-radius: 28px;
+    overflow: hidden;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+}
+
+.product-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 35px -12px rgba(0, 32, 0, 0.3);
+}
+
+.product-image {
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.05);
+}
+
+.product-badge {
+    background: linear-gradient(120deg, var(--ai-purple), var(--secondary));
+    border-radius: 30px;
+    padding: 4px 14px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+/* 响应式 */
+@media (max-width: 1024px) {
+    .sidebar { width: 90px; padding: 1rem 0.5rem; }
+    .sidebar-logo h1, .sidebar-menu span { display: none; }
+    .main-content { margin-left: 90px; padding: 1.5rem; }
+}
+
+@media (max-width: 768px) {
+    .main-content { padding: 1rem; }
+    .dashboard-grid, .risk-container { grid-template-columns: 1fr; }
+}
+
+.datetime-box {
+    text-align: right;
+    background: linear-gradient(135deg, #eef3ea, #e4ecd8);
+    padding: 8px 20px;
+    border-radius: 48px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.date, .weekday, .time {
+    color: var(--primary-dark);
+}
+
+.date {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+        /* ========== 全局变量 ========== */
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #4caf50;
+            --primary-dark: #1b5e20;
+            --secondary: #ff9800;
+            --accent: #2196f3;
+            --ai-purple: #7e57c2;
+            --text: #1f2d1d;
+            --text-light: #5a6e4a;
+            --background: linear-gradient(145deg, #f0f9ec 0%, #e8f3e0 100%);
+            --card-bg: rgba(255, 255, 255, 0.96);
+            --shadow: 0 20px 35px -12px rgba(0, 32, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.02);
+            --shadow-hover: 0 25px 45px -12px rgba(0, 0, 0, 0.25);
+            --ai-glow: 0 0 20px rgba(126, 87, 194, 0.5);
+            --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Poppins', 'Roboto', system-ui, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.5;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* 动态粒子背景效果 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(76, 175, 80, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 60%, rgba(126, 87, 194, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, rgba(255, 152, 0, 0.06) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 漂浮装饰元素 */
+        body::after {
+            content: '🌱🍃🌿';
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            font-size: 80px;
+            opacity: 0.08;
+            pointer-events: none;
+            animation: float-bounce 8s ease-in-out infinite;
+        }
+
+        @keyframes float-bounce {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(5deg); }
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== 侧边栏样式 ========== */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(145deg, #0f3a1a, #2d1f4a, #1a2e3a);
+            backdrop-filter: blur(2px);
+            color: white;
+            padding: 2rem 1.2rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 8px 0 32px rgba(0, 0, 0, 0.2);
+            border-right: 1px solid rgba(255, 193, 7, 0.25);
+            transition: var(--transition);
+        }
+
+        .sidebar:hover {
+            box-shadow: 12px 0 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2.8rem;
+            padding: 12px 16px;
+            background: linear-gradient(90deg, rgba(255, 152, 0, 0.15), transparent);
+            border-radius: 20px;
+            border-left: 3px solid var(--secondary);
+        }
+
+        .sidebar-logo i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));
+            animation: icon-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes icon-pulse {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5)); }
+            50% { filter: drop-shadow(0 0 20px rgba(255, 152, 0, 0.8)); }
+        }
+
+        .sidebar-logo h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #ffb74d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            margin-top: 0.5rem;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #e8f0e5;
+            text-decoration: none;
+            padding: 14px 18px;
+            border-radius: 20px;
+            transition: var(--transition);
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-menu a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .sidebar-menu a:hover::before {
+            left: 100%;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), rgba(126, 87, 194, 0.2));
+            color: var(--secondary);
+            transform: translateX(6px);
+            backdrop-filter: blur(4px);
+        }
+
+        .sidebar-menu i {
+            width: 28px;
+            font-size: 1.3rem;
+            transition: transform 0.3s;
+        }
+
+        .sidebar-menu a:hover i {
+            transform: scale(1.1);
+        }
+
+        /* ========== 主内容区域 ========== */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem 2.5rem;
+            position: relative;
+        }
+
+        .page {
+            display: none;
+            animation: fadeSlideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== 页面头部 ========== */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(46, 125, 50, 0.3);
+        }
+
+        .page-header h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-dark), var(--ai-purple), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            letter-spacing: -0.3px;
+        }
+
+        .ai-badge {
+            background: linear-gradient(120deg, var(--ai-purple), #9561e2);
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: var(--ai-glow);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 1; box-shadow: 0 0 15px rgba(126, 87, 194, 0.5); }
+            50% { opacity: 0.85; box-shadow: 0 0 25px rgba(126, 87, 194, 0.8); }
+        }
+
+        /* ========== 卡片通用样式 ========== */
+        .dashboard-card, .risk-card, .device-card, .chart-container, .review-form-card, .recent-reviews-card, .upload-section, .analysis-section, .expert-info, .expert-chat {
+            background: var(--card-bg);
+            backdrop-filter: blur(2px);
+            border-radius: 32px;
+            padding: 1.8rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(76, 175, 80, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card::before, .risk-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--ai-purple));
+        }
+
+        .dashboard-card:hover, .risk-card:hover, .device-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(76, 175, 80, 0.4);
+        }
+
+        /* ========== 仪表板网格 ========== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .metric {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--ai-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: linear-gradient(90deg, #e0ecd9, #d0e0c8);
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 0.8rem 0;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--ai-purple));
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-insight {
+            background: linear-gradient(135deg, #e8f5e9, #dcecd5);
+            padding: 1rem;
+            border-radius: 20px;
+            margin-top: 1.2rem;
+            font-size: 0.95rem;
+            border-left: 4px solid var(--ai-purple);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+        }
+
+        /* ========== 风险卡片样式 ========== */
+        .risk-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .risk-card {
+            border-left: 6px solid;
+            padding: 1.8rem;
+        }
+
+        .risk-card.high { border-left-color: #e53935; background: linear-gradient(135deg, #fff, #fff5f5); }
+        .risk-card.medium { border-left-color: #fb8c00; background: linear-gradient(135deg, #fff, #fffaf0); }
+        .risk-card.low { border-left-color: #43a047; background: linear-gradient(135deg, #fff, #f0fff4); }
+
+        .risk-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .risk-level {
+            padding: 5px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+   
+        .risk-level.high { background: #ffebee; color: #c62828; box-shadow: 0 0 8px rgba(229, 57, 53, 0.3); }
+        .risk-level.medium { background: #fff3e0; color: #ef6c00; box-shadow: 0 0 8px rgba(251, 140, 0, 0.3); }
+        .risk-level.low { background: #e8f5e9; color: #2e7d32; box-shadow: 0 0 8px rgba(67, 160, 71, 0.3); }
+
+        .risk-actions {
+            margin-top: 1.4rem;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* ========== 按钮样式 ========== */
+        .action-btn, .camera-btn, .scan-btn, .list-product-btn, .buy-btn {
+            padding: 10px 22px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn.primary, .camera-btn, .scan-btn, .list-product-btn, .buy-btn {
+            background: linear-gradient(135deg, var(--primary), var(--ai-purple));
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+        }
+
+        .action-btn.primary::before, .camera-btn::before, .scan-btn::before, .buy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .action-btn.primary:hover::before, .camera-btn:hover::before, .scan-btn:hover::before, .buy-btn:hover::before {
+            left: 100%;
+        }
+
+        .action-btn.primary:hover, .camera-btn:hover, .scan-btn:hover, .buy-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(46, 125, 50, 0.4);
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(135deg, #eef2ec, #e0e8da);
+            color: var(--text);
+        }
+
+        /* ========== 模态框 ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 750px;
+            max-height: 85vh;
+            border-radius: 40px;
+            overflow-y: auto;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4);
+            animation: modalPop 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--ai-purple));
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 40px 40px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        /* ========== 评价页面星星样式 ========== */
+        .stars {
+            display: flex;
+            gap: 8px;
+            font-size: 2rem;
+            cursor: pointer;
+            margin: 1rem 0;
+        }
+
+        .star {
+            color: #ddd;
+            transition: 0.1s;
+        }
+
+        .star.active, .star:hover {
+            color: #ffb300;
+            text-shadow: 0 0 10px rgba(255, 180, 0, 0.5);
+            transform: scale(1.1);
+        }
+
+        /* ========== 聊天区域 ========== */
+        .expert-chat {
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary), var(--ai-purple));
+            padding: 1.2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: linear-gradient(145deg, #fefef7, #f9fff5);
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.8rem 1.2rem;
+            border-radius: 18px;
+            max-width: 85%;
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .ai-message {
+            background: linear-gradient(135deg, #e8f5e9, #dcecd5);
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, var(--primary), var(--ai-purple));
+            color: white;
+            border-bottom-right-radius: 5px;
+            margin-left: auto;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 1rem;
+            gap: 12px;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .chat-input button {
+            background: linear-gradient(135deg, var(--primary), var(--ai-purple));
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        /* ========== 市场商品卡片 ========== */
+        .marketplace-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 35px -12px rgba(0, 32, 0, 0.3);
+        }
+
+        .product-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-badge {
+            background: linear-gradient(120deg, var(--ai-purple), var(--secondary));
+            border-radius: 30px;
+            padding: 4px 14px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .product-info {
+            padding: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        /* ========== 日期时间组件 ========== */
+        .datetime-box {
+            text-align: right;
+            background: linear-gradient(135deg, #eef3ea, #e4ecd8);
+            padding: 8px 20px;
+            border-radius: 48px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .date, .weekday, .time {
+            color: var(--primary-dark);
+        }
+
+        .date {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* ========== 其他组件 ========== */
+        .action-a {
+            background-image: url('img/6213cdf9c6d60bf03e77bede318907b6.gif');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 1.5rem;
+            background-color: #75da79;
+            border-radius: 20px;
+        }
+
+        .logo-background {
+            width: 150px; 
+            height: 100px; 
+            background-image: url("img/a.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #1b5e20;
+            border-radius: 20px;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: white;
+            min-width: 150px;
+        }
+
+        /* ========== 响应式设计 ========== */
+        @media (max-width: 1024px) {
+            .sidebar { width: 90px; padding: 1rem 0.5rem; }
+            .sidebar-logo h1, .sidebar-menu span { display: none; }
+            .main-content { margin-left: 90px; padding: 1.5rem; }
+            .page-header h2 { font-size: 1.6rem; }
+        }
+
+        @media (max-width: 768px) {
+            .main-content { padding: 1rem; }
+            .dashboard-grid, .risk-container { grid-template-columns: 1fr; }
+            .marketplace-grid { grid-template-columns: 1fr; }
+            .page-header h2 { font-size: 1.3rem; flex-wrap: wrap; }
+            .datetime-box { text-align: left; margin-top: 0.5rem; }
+        }
+
+        /* ========== 统计分析图表 ========== */
+        .analytics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .chart-placeholder {
+            height: 250px;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        /* 数据分析页面 */
+        .analytics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .chart-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-actions {
+            display: flex;
+            gap: 0.5rem; 
+        }
+        
+        .chart-btn {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .chart-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .chart-placeholder {
+            height: 250px;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .chart-placeholder::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(76,175,80,0.2)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            width: 80%;
+            height: 80%;
+            gap: 10px;
+        }
+        
+        .chart-bar {
+            width: 30px;
+            background: linear-gradient(to top, var(--primary), var(--ai-purple));
+            border-radius: 4px 4px 0 0;
+            position: relative;
+        }
+        
+        .chart-bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+        
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            width: 80%;
+            height: 80%;
+            gap: 10px;
+        }
+
+        .chart-bar {
+            width: 30px;
+            background: linear-gradient(to top, var(--primary), var(--ai-purple));
+            border-radius: 4px 4px 0 0;
+            position: relative;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table th {
+            background: #f5f5f5;
+            font-weight: 600;
+        }
+/* ========== 滑块控件 ========== */
+.slider-container {
+    margin-bottom: 1.5rem;
+}
+
+.slider-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+}
+
+.slider {
+    width: 100%;
+    margin: 10px 0;
+    -webkit-appearance: none;
+    height: 8px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--primary) 50%, #e0e0e0 50%, #e0e0e0 100%);
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.1s ease;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 2px solid white;
+    transition: transform 0.1s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.slider::-moz-range-track {
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 10px;
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    border: none;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider-toggle {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider-toggle:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider-toggle {
+    background-color: var(--primary);
+}
+
+input:checked + .slider-toggle:before {
+    transform: translateX(26px);
+}
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Poppins', 'Roboto', system-ui, sans-serif;
+        }
+
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #4caf50;
+            --primary-dark: #1b5e20;
+            --secondary: #ff9800;
+            --accent: #2196f3;
+            --ai-purple: #7e57c2;
+            --text: #1f2d1d;
+            --text-light: #5a6e4a;
+            --background: linear-gradient(145deg, #f0f9ec 0%, #e8f3e0 100%);
+            --card-bg: rgba(255, 255, 255, 0.96);
+            --shadow: 0 20px 35px -12px rgba(0, 32, 0, 0.15);
+            --shadow-hover: 0 25px 45px -12px rgba(0, 0, 0, 0.25);
+            --ai-glow: 0 0 20px rgba(126, 87, 194, 0.5);
+            --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.5;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(145deg, #0f3a1a, #2d1f4a, #1a2e3a);
+            backdrop-filter: blur(2px);
+            color: white;
+            padding: 2rem 1.2rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 8px 0 32px rgba(0, 0, 0, 0.2);
+            border-right: 1px solid rgba(255, 193, 7, 0.25);
+            transition: var(--transition);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2.8rem;
+            padding: 12px 16px;
+            background: linear-gradient(90deg, rgba(255, 152, 0, 0.15), transparent);
+            border-radius: 20px;
+            border-left: 3px solid var(--secondary);
+        }
+
+        .sidebar-logo i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+        }
+
+        .sidebar-logo h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #ffb74d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #e8f0e5;
+            text-decoration: none;
+            padding: 14px 18px;
+            border-radius: 20px;
+            transition: var(--transition);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), rgba(126, 87, 194, 0.2));
+            color: var(--secondary);
+            transform: translateX(6px);
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem 2.5rem;
+            position: relative;
+        }
+
+        .page {
+            display: none;
+            animation: fadeSlideUp 0.4s ease-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(46, 125, 50, 0.3);
+            padding-bottom: 1rem;
+        }
+
+        .page-header h2 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-dark), var(--ai-purple), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .ai-badge {
+            background: linear-gradient(120deg, var(--ai-purple), #9561e2);
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: var(--ai-glow);
+            color: white;
+        }
+
+        /* 卡片样式 */
+        .dashboard-card, .risk-card, .device-card, .chart-container, .review-form-card, .recent-reviews-card {
+            background: var(--card-bg);
+            border-radius: 32px;
+            padding: 1.8rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .risk-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2rem;
+        }
+
+        .risk-card {
+            border-left: 6px solid;
+        }
+        .risk-card.high { border-left-color: #e53935; }
+        .risk-card.medium { border-left-color: #fb8c00; }
+        .risk-card.low { border-left-color: #43a047; }
+
+        .risk-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .risk-level {
+            padding: 5px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .risk-level.high { background: #ffebee; color: #c62828; }
+        .risk-level.medium { background: #fff3e0; color: #ef6c00; }
+        .risk-level.low { background: #e8f5e9; color: #2e7d32; }
+
+        .action-btn {
+            padding: 10px 22px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--ai-purple));
+            color: white;
+        }
+        .action-btn.secondary {
+            background: #eef2ec;
+            color: var(--text);
+        }
+
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            border-radius: 40px;
+            overflow-y: auto;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.4);
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--ai-purple));
+            color: white;
+            padding: 1.2rem 2rem;
+            border-radius: 40px 40px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        /* 评价星星 */
+        .stars {
+            display: flex;
+            gap: 8px;
+            font-size: 2rem;
+            cursor: pointer;
+            margin: 1rem 0;
+        }
+        .star {
+            color: #ddd;
+            transition: 0.1s;
+        }
+        .star.active, .star:hover {
+            color: #ffb300;
+            transform: scale(1.1);
+        }
+
+        /* 相机专用样式 (修复弹窗) */
+        .camera-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .camera-container {
+            background: #1e2a1c;
+            border-radius: 40px;
+            width: 90%;
+            max-width: 600px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .camera-preview {
+            background: #000;
+            border-radius: 24px;
+            overflow: hidden;
+            margin: 1rem 0;
+            position: relative;
+        }
+        video, #capturedImg {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            background: #000;
+        }
+        .camera-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        .camera-btn {
+            background: linear-gradient(135deg, var(--primary), var(--ai-purple));
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .marketplace-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 1.8rem;
+            margin-top: 1.5rem;
+        }
+        .product-card {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .product-image {
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+        }
+        .buy-btn {
+            background: linear-gradient(135deg, var(--primary), var(--ai-purple));
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 30px;
+            margin-top: 0.5rem;
+            cursor: pointer;
+        }
+        .review-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 768px) {
+            .sidebar { width: 90px; }
+            .sidebar-logo h1, .sidebar-menu span { display: none; }
+            .main-content { margin-left: 90px; padding: 1rem; }
+            .review-grid { grid-template-columns: 1fr; }
+        }
+   
+      
+    </style>
+ 
+</head>
+<body>
+    <div class="app-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="sidebar-logo">
+                <i class="logo-background" style="background-image: url('img/73f329c98500e19366b15222ae50d21b.gif');"></i>
+      
+                <h1>智农蜂巢</h1>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active" onclick="showPage('dashboard')"><i class="fas fa-home"></i> <span>智能仪表板</span></a></li>
+                <li><a href="#" onclick="showPage('scheduling')"><i class="fas fa-robot"></i> <span>AI智能调度</span></a></li>
+                <li><a href="#" onclick="showPage('quality-check')"><i class="fas fa-camera"></i> <span>AI质量检测</span></a></li>
+                <li><a href="#" onclick="showPage('marketplace')"><i class="fas fa-store"></i> <span>AI农产品市场</span></a></li>
+                <li><a href="#" onclick="showPage('ai-expert')"><i class="fas fa-user-md"></i> <span>AI农业专家</span></a></li>
+                <li><a href="#" onclick="showPage('risk-management')"><i class="fas fa-cloud-sun-rain"></i> <span>AI风险预警</span></a></li>
+                <li><a href="#" onclick="showPage('analytics')"><i class="fas fa-chart-line"></i> <span>AI数据分析</span></a></li>
+            </ul>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <!-- 仪表板页面 -->
+            <div id="dashboard" class="page active">
+                <div class="page-header">
+                    <h2><i class="fas fa-home"></i> 农场智能仪表板 <span class="ai-badge">AI驱动决策</span></h2>
+                    <div class="datetime-box">
+                        <div class="date" id="date">加载中...</div>
+                        <div class="weekday" id="weekday">—</div>
+                        <div class="time" id="time">--:--:--</div>
+                      </div>
+                    
+                      <script>
+                        function formatNumber(n) {
+                          return n.toString().padStart(2, '0');
+                        }
+                    
+                        function updateDateTime() {
+                          const now = new Date();
+                    
+                          // 获取年月日
+                          const year = now.getFullYear();
+                          const month = now.getMonth() + 1; // getMonth() 返回 0-11
+                          const day = now.getDate();
+                    
+                          // 星期几（中文）
+                          const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+                          const weekday = weekdays[now.getDay()];
+                    
+                          // 时间（时:分:秒）
+                          const hours = formatNumber(now.getHours());
+                          const minutes = formatNumber(now.getMinutes());
+                          const seconds = formatNumber(now.getSeconds());
+                    
+                          // 更新页面内容
+                          document.getElementById('date').textContent = `${year}年${formatNumber(month)}月${formatNumber(day)}日`;
+                          document.getElementById('weekday').textContent = weekday;
+                          document.getElementById('time').textContent = `${hours}:${minutes}:${seconds}`;
+                        }
+                    
+                        // 立即执行一次
+                        updateDateTime();
+                        // 每秒更新一次
+                        setInterval(updateDateTime, 1000);
+                      </script>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-tint"></i> 智能灌溉系统</h3>
+                        <p>AI根据土壤湿度和天气预报优化灌溉</p>
+                        <div class="metric">节水 35%</div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 75%"></div>
+                        </div>
+                        <p>当前状态: 运行良好</p>
+                        <div class="ai-insight">
+                            <strong>AI建议:</strong> 明天有雨，建议减少30%灌溉量
+                        </div>
+                    </div>
+                  
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-seedling"></i> 作物生长预测</h3>
+                        <p>玉米作物预计15天后达到最佳采收状态</p>
+                        <div class="metric">产量 +18%</div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 60%"></div>
+                        </div>
+                        <p>生长进度: 60%</p>
+                        <div class="ai-insight">
+                            <strong>AI预测:</strong> 当前生长速度比预期快2.3天
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-bug"></i> 病虫害预警</h3>
+                        <p>当前区域病虫害风险较低</p>
+                        <div class="metric">风险 12%</div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 12%"></div>
+                        </div>
+                        <p>建议: 常规监测即可</p>
+                        <div class="ai-insight">
+                            <strong>AI监测:</strong> 已扫描245张叶片图像，未发现病害
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-dollar-sign"></i> 市场效益分析</h3>
+                        <p>建议延迟一周采收，价格预计上涨8%</p>
+                        <div class="metric">收益 +¥5,200</div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 45%"></div>
+                        </div>
+                        <p>最佳销售窗口: 10月15-22日</p>
+                        <div class="ai-insight">
+                            <strong>AI分析:</strong> 目标市场库存下降，需求上升
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-shopping-cart"></i> 快速上架农产品</h3>
+                    <p>使用AI质量检测系统快速评估并上架您的农产品</p>
+                    <button class="list-product-btn" onclick="showPage('quality-check')">
+                        <i class="fas fa-camera"></i> 开始AI质量检测
+                    </button>
+                </div>
+            </div>
+
+            <!-- AI智能调度页面 -->
+            <div id="scheduling" class="page">
+                <div class="page-header">
+                    <h2><i class="fas fa-robot"></i> AI智能调度中心 <span class="ai-badge">自动化控制</span></h2>
+                    <div>实时设备状态监控</div>
+                </div>
+                
+                <div class="scheduling-container">
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-title">
+                                <i class="fas fa-tint"></i>
+                                <h3>智能灌溉系统</h3>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider-toggle"></span>
+                            </label>
+                        </div>
+                        <p>根据土壤湿度和天气预报自动调整灌溉</p>
+                        
+                        <div class="control-panel">
+                            <div class="slider-container">
+                                <div class="slider-label">
+                                    <span>灌溉强度</span>
+                                    <span id="irrigationValue">50%</span>
+                                </div>
+                                <input type="range" min="0" max="100" value="50" class="slider" id="irrigationSlider" oninput="updateIrrigationValue(this.value)">
+                            </div>
+                            
+                            <div class="slider-container">
+                                <div class="slider-label">
+                                    <span>灌溉时长</span>
+                                    <span id="durationValue">30分钟</span>
+                                </div>
+                                <input type="range" min="5" max="120" value="30" class="slider" id="durationSlider" oninput="updateDurationValue(this.value)">
+                            </div>
+                        </div>
+                        
+                        <div class="ai-insight">
+                            <strong>AI调度建议:</strong> 根据天气预报，建议明天上午10点进行灌溉，此时蒸发量最低。
+                        </div>
+                    </div>
+                    
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-title">
+                                <i class="fas fa-wind"></i>
+                                <h3>无人机巡检</h3>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider-toggle"></span>
+                            </label>
+                        </div>
+                        <p>自动规划巡检路线，监测作物生长状况</p>
+                        
+                        <div class="control-panel">
+                            <div class="slider-container">
+                                <div class="slider-label">
+                                    <span>巡检频率</span>
+                                    <span id="inspectionValue">每日一次</span>
+                                </div>
+                                <select class="slider" id="inspectionSelect" onchange="updateInspectionValue(this.value)" style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ddd;">
+                                    <option value="每日一次">每日一次</option>
+                                    <option value="每两日一次">每两日一次</option>
+                                    <option value="每周三次">每周三次</option>
+                                    <option value="每周一次">每周一次</option>
+                                </select>
+                            </div>
+                            
+                            <button class="camera-btn" style="margin-top: 1rem; width: 100%;">
+                                <i class="fas fa-play"></i> 立即执行巡检
+                            </button>
+                        </div>
+                        
+                        <div class="ai-insight">
+                            <strong>AI分析:</strong> 上次巡检发现3处潜在问题，已自动标记位置。
+                        </div>
+                    </div>
+                    
+                    <div class="device-card">
+                        <div class="device-header">
+                            <div class="device-title">
+                                <i class="fas fa-temperature-low"></i>
+                                <h3>环境控制系统</h3>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider-toggle"></span>
+                            </label>
+                        </div>
+                        <p>自动调节温室温度、湿度和光照</p>
+                        
+                        <div class="control-panel">
+                            <div class="slider-container">
+                                <div class="slider-label">
+                                    <span>温度控制</span>
+                                    <span id="temperatureValue">25°C</span>
+                                </div>
+                                <input type="range" min="15" max="35" value="25" class="slider" id="temperatureSlider" oninput="updateTemperatureValue(this.value)">
+                            </div>
+                            
+                            <div class="slider-container">
+                                <div class="slider-label">
+                                    <span>湿度控制</span>
+                                    <span id="humidityValue">65%</span>
+                                </div>
+                                <input type="range" min="30" max="90" value="65" class="slider" id="humiditySlider" oninput="updateHumidityValue(this.value)">
+                            </div>
+                        </div>
+                        
+                        <div class="ai-insight">
+                            <strong>AI优化:</strong> 当前环境参数最适合番茄生长，已自动维持最佳条件。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI质量检测页面 -->
+             <div id="quality-check" class="page">
+            <div class="page-header">
+                <h2><i class="fas fa-camera"></i> AI农产品质量检测 <span class="ai-badge">视觉分析</span></h2>
+            </div>
+            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                <div class="upload-section" style="flex:1">
+                    <h3>上传农产品照片</h3>
+                    <div class="upload-area" onclick="document.getElementById('qualityInput').click()" style="border:2px dashed #cbd5e1; border-radius:20px; padding:2rem; text-align:center; cursor:pointer">
+                        <i class="fas fa-cloud-upload-alt" style="font-size:2.5rem; color:#10b981"></i>
+                        <h4 style="margin-top:0.5rem">点击上传照片</h4>
+                        <p style="color:#64748b">支持 JPG, PNG 格式</p>
+                        <button class="camera-btn">
+                                <i class="fas fa-camera"></i> 选择照片
+                            </button>
+                    </div>
+                    <input type="file" id="qualityInput" accept="image/*" style="display:none" onchange="analyzeQuality(this)">
+                    <div class="product-details" style="margin-top: 2rem;">
+                            <h4>产品信息</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 1.2rem;">
+                                <div>
+                                    <label>产品名称</label>
+                                    <input type="text" class="filter-select" placeholder="例如: 有机西红柿" style="width: 100%; margin-top: 0.5rem; padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
+                                </div>
+                                <div>
+                                    <label>产品类别</label>
+                                    <select class="filter-select" style="width: 100%; margin-top: 0.5rem; padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
+                                        <option>蔬菜</option>
+                                        <option>水果</option>
+                                        <option>谷物</option>
+                                        <option>其他</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>价格 (¥/公斤)</label>
+                                    <input type="number" class="filter-select" placeholder="例如: 12.5" style="width: 100%; margin-top: 0.5rem; padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
+                                </div>
+                                <div>
+                                    <label>数量 (公斤)</label>
+                                    <input type="number" class="filter-select" placeholder="例如: 50" style="width: 100%; margin-top: 0.5rem; padding: 12px; border-radius: 8px; border: 1px solid #ddd;">
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="analysis-section" style="flex:1">
+                    <h3>AI质量分析结果</h3>
+                        <p>基于3D视觉分析和深度学习模型的质量评估</p>
+                        <div class="action-a"></div>
+                    
+                    <div style="text-align:center">
+                        <div class="score-circle" style="width:120px; height:120px; background:conic-gradient(#10b981 0% 85%, #e2e8f0 85% 100%); border-radius:50%; margin:0 auto 1rem; position:relative; display:flex; align-items:center; justify-content:center">
+                            <div style="width:90px; height:90px; background:white; border-radius:50%; display:flex; align-items:center; justify-content:center">
+                                <span class="score-value" id="qualityScore" style="font-size:1.8rem; font-weight:700; color:#10b981">85%</span>
+                            </div>
+                        </div>
+                        <h4 id="qualityLevel">产品质量评分</h4>
+                    </div>
+                    <div class="quality-details" style="display:grid; grid-template-columns:repeat(2,1fr); gap:0.8rem; margin:1rem 0">
+                        <div class="quality-item good" style="background:#f0fdf4; padding:0.8rem; border-radius:12px; text-align:center">外观: 优秀</div>
+                        <div class="quality-item good" style="background:#f0fdf4; padding:0.8rem; border-radius:12px; text-align:center">大小均匀: 良好</div>
+                        <div class="quality-item average" style="background:#fef3c7; padding:0.8rem; border-radius:12px; text-align:center">颜色: 中等</div>
+                        <div class="quality-item good" style="background:#f0fdf4; padding:0.8rem; border-radius:12px; text-align:center">完整性: 优秀</div>
+                    </div>
+                    <button class="list-product-btn" style="width: auto; padding: 10px 20px;" onclick="showPage('marketplace')">
+                            <i class="fas fa-store"></i> 上架到农产品市场
+                        </button>
+                </div>
+            </div>
+        </div>
+            
+ <!-- AI专家页面 -->
+             <div id="ai-expert" class="page active">
+                <div class="page-header">
+                    <h2><i class="fas fa-user-md"></i> AI农业专家咨询 <span class="ai-badge">支持照片分析</span></h2>
+                    <div>拍照上传作物照片，AI专家实时分析并提供专业建议</div>
+                </div>
+                
+                <div class="ai-expert-container">
+                    <div class="expert-info">
+                        <h3><i class="fas fa-brain"></i> AI农业专家系统</h3>
+                        <p>基于深度学习和农业大数据，我可以为您提供专业的种植建议和问题解决方案。</p>
+                     
+                        <div style="margin-top: 2rem;">
+                            <h4>主要功能</h4>
+                            <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                                <li style="margin-bottom: 0.8rem;">📸 拍照识别病虫害</li>
+                                <li style="margin-bottom: 0.8rem;">🌱 土壤改良与施肥方案</li>
+                                <li style="margin-bottom: 0.8rem;">💧 灌溉与水资源管理</li>
+                                <li style="margin-bottom: 0.8rem;">🔍 作物生长问题诊断</li>
+                                <li style="margin-bottom: 0.8rem;">📊 市场趋势与销售建议</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- 照片操作按钮 -->
+                       <div class="expert-info" style="flex:1; background:var(--card-bg); border-radius:32px; padding:1.5rem;">
+                    <h3><i class="fas fa-brain"></i> 作物诊断</h3>
+                    <button class="camera-btn" onclick="openCameraExpert()" style="margin:1rem 0;"><i class="fas fa-camera"></i> 拍照分析</button>
+                    <button class="camera-btn" onclick="uploadPhotoExpert()"><i class="fas fa-upload"></i> 上传图片</button>
+                    <div id="expertPhotoPreview" style="margin-top:1rem; text-align:center;"></div>
+                </div>
+                        
+                        <div class="ai-insight" style="margin-top: 2rem; background-color: #e8f5e9; padding: 1rem; border-radius: 10px; border-left: 4px solid var(--ai-purple);">
+                            <strong>💡 小贴士:</strong> 您可以拍照上传作物照片，AI专家会分析照片并提供详细的诊断和解决方案。
+                        </div>
+                    </div>
+                    
+                    <div class="expert-chat">
+                        <div class="chat-header">
+                            <h3>AI农业专家</h3>
+                        </div>
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message ai-message">
+                                您好！我是您的AI农业专家，基于深度学习和农业大数据分析。<br><br>
+                                📸 <strong>拍照分析功能</strong>：点击左侧"拍照分析"按钮，拍摄作物照片上传<br>
+                                ❓ <strong>专业诊断</strong>：我会根据照片分析病虫害、生长状况<br>
+                                💡 <strong>解决方案</strong>：提供针对性的防治建议和管理方案<br><br>
+                                请先拍摄或上传作物照片，然后描述您的问题！
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" id="userInput" placeholder="输入您的问题，例如：这片叶子怎么了？如何防治？">
+                            <button id="sendButton"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <!-- AI农产品市场页面 -->
+            <div id="marketplace" class="page">
+                <div class="page-header">
+                    <h2><i class="fas fa-store"></i> AI农产品市场 <span class="ai-badge">智能推荐</span></h2>
+                    <div>AI驱动的农产品交易平台</div>
+                </div>
+                
+                <div class="marketplace-filters">
+                    <select class="filter-select">
+                        <option>所有类别</option>
+                        <option>蔬菜</option>
+                        <option>水果</option>
+                        <option>谷物</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>所有地区</option>
+                        <option>华北</option>
+                        <option>华东</option>
+                        <option>华南</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>价格排序</option>
+                        <option>从低到高</option>
+                        <option>从高到低</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>质量评级</option>
+                        <option>优秀 (90%+)</option>
+                        <option>良好 (80-90%)</option>
+                        <option>一般 (70-80%)</option>
+                    </select>
+                    <button class="buy-btn" style="width: auto; padding: 10px 20px;" onclick="showPage('quality-check')">
+                        <i class=""></i> 我要卖货
+                    </button>
+                    <button class="buy-btn" style="width: auto; padding: 10px 20px;" onclick="showPage('review-page')">
+                        <i class=""></i>我要评价
+                        
+                    </button>
+                </div>
+         
+                 <div class="marketplace-grid">
+                    <div class="product-card">
+                        <div class="product-image" style="background-image: url('img/xih.jpg')">
+                            <div class="product-badge">AI认证优质</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>有机西红柿</h4>
+                            <p>张大山农场 · 山东</p>
+                            <div class="product-price">¥2.98/公斤</div>
+                            <div class="ai-recommendation">
+                                <i class="fas fa-robot"></i> AI预测: 未来一周需求上涨15%
+                            </div>
+                            <button class="buy-btn">立即购买</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image" style="background-image: url('img/玉米·.jpg')">
+                            <div class="product-badge">AI认证优质</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>新鲜玉米</h4>
+                            <p>李庄合作社 · 吉林</p>
+                            <div class="product-price">¥2.2/公斤</div>
+                            <div class="ai-recommendation">
+                                <i class="fas fa-robot"></i> AI推荐: 匹配您附近的3个买家
+                            </div>
+                            <button class="buy-btn">立即购买</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image" style="background-image: url('img/黄瓜.jpg')">
+                            <div class="product-badge">AI认证优质</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>绿色黄瓜</h4>
+                            <p>王家庄农场 · 河北</p>
+                            <div class="product-price">¥3.5/公斤</div>
+                            <div class="ai-recommendation">
+                                <i class="fas fa-robot"></i> AI建议: 适合电商平台销售
+                            </div>
+                            <button class="buy-btn">立即购买</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image" style="background-image: url('img/大米.jpg')">
+                            <div class="product-badge">AI认证优质</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>生态大米</h4>
+                            <p>稻田科技 · 黑龙江</p>
+                            <div class="product-price">¥20.0/公斤</div>
+                            <div class="ai-recommendation">
+                                <i class="fas fa-robot"></i> AI分析: 品质评分92/100
+                            </div>
+                            <button class="buy-btn">立即购买</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image" style="background-image: url('img/桃.jpg')">
+                            <div class="product-badge">AI推荐新品</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>猕猴桃</h4>
+                            <p>果香园 · 陕西</p>
+                            <div class="product-price">¥5.0/公斤</div>
+                            <div class="ai-recommendation">
+                                <i class="fas fa-robot"></i> AI检测: 甜度15.2%，维生素C丰富
+                            </div>
+                            <button class="buy-btn">立即购买</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image" style="background-image: url('img/土豆.jpg')">
+                            <div class="product-badge">AI认证优质</div>
+                        </div>
+                        <div class="product-info">
+                            <h4>紫皮土豆</h4>
+                            <p>高原农场 · 甘肃</p>
+                            <div class="product-price">¥4.92/公斤</div>
+                            <div class="ai-recommendation">
+                                <i class="fas fa-robot"></i> AI分析: 花青素含量高，营养价值丰富
+                            </div>
+                            <button class="buy-btn">立即购买</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card" style="margin-top: 2rem;">
+                    <h3><i class="fas fa-chart-bar"></i> 市场趋势分析</h3>
+                    <p>AI基于大数据分析提供的市场洞察</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+                        <div class="ai-insight">
+                            <strong>热门品类:</strong> 西红柿、黄瓜、玉米需求持续上升，价格稳中有涨。
+                        </div>
+                        <div class="ai-insight">
+                            <strong>价格预测:</strong> 未来一周蔬菜价格预计上涨3-5%，水果价格基本稳定。
+                        </div>
+                        <div class="ai-insight">
+                            <strong>采购建议:</strong> 建议加大叶菜类种植，市场需求旺盛。
+                        </div>
+                        <div class="ai-insight">
+                            <strong>销售策略:</strong> 电商平台销售占比提升，建议优化线上展示。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- 评价页面 (完善JS+提交存储) -->
+        <div id="review-page" class="page">
+            <div class="page-header"><h2><i class="fas fa-comment-dots"></i> 农产品真实评价</h2><span class="ai-badge">口碑分享</span></div>
+            <div class="review-grid">
+                <div class="review-form-card">
+                    <h3>撰写评价</h3>
+                    <div id="selectedProductHint" style="background:#eff5ea; border-radius:40px; padding:12px; text-align:center; cursor:pointer;" onclick="openProductSelectModal()">📦 点击选择已购商品</div>
+                    <div id="selectedProductPreview" style="display:none; background:#f9fbf6; border-radius:24px; padding:12px; margin:12px 0;"></div>
+                    <div class="stars" id="ratingStars"><span class="star" data-val="1">★</span><span class="star" data-val="2">★</span><span class="star" data-val="3">★</span><span class="star" data-val="4">★</span><span class="star" data-val="5">★</span></div>
+                    <textarea id="reviewComment" rows="3" placeholder="分享您的真实体验，口感、新鲜度..." style="width:100%; border-radius:28px; border:1px solid #ccc; padding:12px;"></textarea>
+                    <button class="buy-btn" id="submitFinalReview" style="width:100%; margin-top:12px;">✅ 提交评价 + 获得积分</button>
+                </div>
+                <div class="recent-reviews-card"><h3>最新用户评价</h3><div id="reviewsListContainer" style="max-height:460px; overflow-y:auto;"></div></div>
+            </div>
+        </div>
+
+  
+    <!-- AI风险预警页面（完整版，带详细报告弹窗） -->
+            <div id="risk-management" class="page active">
+                <div class="page-header">
+                    <h2><i class="fas fa-cloud-sun-rain"></i> AI风险预警系统 <span class="ai-badge">实时监测</span></h2>
+                   
+                </div>
+                
+                <div class="risk-container">
+                    <!-- 强风预警卡片 -->
+                    <div class="risk-card high">
+                        <div class="risk-header">
+                            <h3><i class="fas fa-wind"></i> 强风预警</h3>
+                            <div class="risk-level high">高风险</div>
+                        </div>
+                        <p><strong>预警内容:</strong> 预计48小时后有强风天气，平均风速7-8级，阵风9级。</p>
+                        <p><strong>影响范围:</strong> 高杆作物（玉米、向日葵等）</p>
+                        <p><strong>预警时间:</strong> 2025-12-17 14:00</p>
+                        <div class="ai-insight">
+                            <strong>AI应对方案:</strong> 已自动停止高杆作物灌溉，调度无人机回库，建议加固温室设施。
+                        </div>
+                        <div class="risk-actions">
+                            <button class="action-btn primary" onclick="showRiskDetailReport('wind')">查看详细报告</button>
+                            <button class="action-btn secondary">一键执行防护</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 高温预警卡片 -->
+                    <div class="risk-card medium">
+                        <div class="risk-header">
+                            <h3><i class="fas fa-temperature-high"></i> 高温预警</h3>
+                            <div class="risk-level medium">中风险</div>
+                        </div>
+                        <p><strong>预警内容:</strong> 未来3天将持续高温，最高温度达38°C。</p>
+                        <p><strong>影响范围:</strong> 叶菜类、水果类作物</p>
+                        <p><strong>预警时间:</strong> 2025-12-16 09:00</p>
+                        <div class="ai-insight">
+                            <strong>AI应对方案:</strong> 已调整灌溉计划，增加早晚灌溉频次，启动遮阳系统。
+                        </div>
+                        <div class="risk-actions">
+                            <button class="action-btn primary" onclick="showRiskDetailReport('heat')">查看详细报告</button>
+                            <button class="action-btn secondary">启动降温措施</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 病虫害预警卡片 -->
+                    <div class="risk-card low">
+                        <div class="risk-header">
+                            <h3><i class="fas fa-bug"></i> 病虫害预警</h3>
+                            <div class="risk-level low">低风险</div>
+                        </div>
+                        <p><strong>预警内容:</strong> 监测到周边区域蚜虫活动增加。</p>
+                        <p><strong>影响范围:</strong> 蔬菜作物</p>
+                        <p><strong>预警时间:</strong> 2025-12-15 16:30</p>
+                        <div class="ai-insight">
+                            <strong>AI应对方案:</strong> 建议加强监测，准备生物防治措施，已标记高风险区域。
+                        </div>
+                        <div class="risk-actions">
+                            <button class="action-btn primary" onclick="showRiskDetailReport('pest')">查看虫情地图</button>
+                            <button class="action-btn secondary">部署益虫</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 干旱预警卡片 -->
+                    <div class="risk-card medium">
+                        <div class="risk-header">
+                            <h3><i class="fas fa-tint"></i> 干旱预警</h3>
+                            <div class="risk-level medium">中风险</div>
+                        </div>
+                        <p><strong>预警内容:</strong> 未来15天降雨量预计比往年减少40%。</p>
+                        <p><strong>影响范围:</strong> 所有作物</p>
+                        <p><strong>预警时间:</strong> 2025-12-14 11:20</p>
+                        <div class="ai-insight">
+                            <strong>AI应对方案:</strong> 已启动节水灌溉模式，建议覆盖保墒材料，调整种植计划。
+                        </div>
+                        <div class="risk-actions">
+                            <button class="action-btn primary" onclick="showRiskDetailReport('drought')">查看水资源报告</button>
+                            <button class="action-btn secondary">优化灌溉计划</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card" style="margin-top: 2rem;">
+                    <h3><i class="fas fa-chart-line"></i> 风险趋势分析</h3>
+                    <p>AI基于历史数据和实时监测预测未来风险趋势</p>
+                    <div style="display: flex; justify-content: space-between; margin-top: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                        <div style="text-align: center; flex:1;">
+                            <div style="font-size: 2rem; color: var(--primary);">12</div>
+                            <div>本周预警数量</div>
+                        </div>
+                        <div style="text-align: center; flex:1;">
+                            <div style="font-size: 2rem; color: #ff9800;">3</div>
+                            <div>中等以上风险</div>
+                        </div>
+                        <div style="text-align: center; flex:1;">
+                            <div style="font-size: 2rem; color: #4caf50;">92%</div>
+                            <div>预警准确率</div>
+                        </div>
+                        <div style="text-align: center; flex:1;">
+                            <div style="font-size: 2rem; color: var(--ai-purple);">85%</div>
+                            <div>自动处理率</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 风险报告模态框 (详细报告页面) -->
+<div id="riskReportModal" class="modal">
+    <div class="modal-content" style="max-width: 800px;">
+        <div class="modal-header">
+            <h3 id="reportTitle"><i class="fas fa-file-alt"></i> 风险详细报告</h3>
+            <button class="modal-close" onclick="closeRiskModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="reportBody">
+            <!-- 报告内容动态填充 -->
+        </div>
+    </div>
+</div>
+<!-- 商品选择模态框 -->
+<div id="productSelectModal" class="modal">
+    <div class="modal-content">
+        <h3>选择要评价的商品</h3>
+        <div id="purchasedProductsList"></div>
+        <button class="action-btn secondary" onclick="closeProductModal()" style="margin-top:1rem;">取消</button>
+    </div>
+</div>
+
+            
+            <!-- AI数据分析页面 -->
+            <div id="analytics" class="page">
+                <div class="page-header">
+                    <h2><i class="fas fa-chart-line"></i> AI数据分析中心 <span class="ai-badge">深度洞察</span></h2>
+                    <div>基于大数据的农场运营分析</div>
+                </div>
+                
+                <div class="analytics-container">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-chart-bar"></i> 作物产量趋势</h3>
+                            <div class="chart-actions">
+                                <button class="chart-btn ">月度</button>
+                                <button class="chart-btn">季度</button>
+                                <button class="chart-btn active">年度</button>
+                            </div>
+                        </div>
+                        <p>过去12个月主要作物产量变化趋势</p>
+                        <div class="chart-placeholder">
+                            <div class="chart-bars">
+                                <div class="chart-bar" style="height: 40%;">
+                                    <div class="chart-bar-label">1月</div>
+                                </div>
+                                <div class="chart-bar" style="height: 55%;">
+                                    <div class="chart-bar-label">2月</div>
+                                </div>
+                                <div class="chart-bar" style="height: 65%;">
+                                    <div class="chart-bar-label">3月</div>
+                                </div>
+                                <div class="chart-bar" style="height: 70%;">
+                                    <div class="chart-bar-label">4月</div>
+                                </div>
+                                <div class="chart-bar" style="height: 85%;">
+                                    <div class="chart-bar-label">5月</div>
+                                </div>
+                                <div class="chart-bar" style="height: 95%;">
+                                    <div class="chart-bar-label">6月</div>
+                                </div>
+                                <div class="chart-bar" style="height: 100%;">
+                                    <div class="chart-bar-label">7月</div>
+                                </div>
+                                <div class="chart-bar" style="height: 90%;">
+                                    <div class="chart-bar-label">8月</div>
+                                </div>
+                                <div class="chart-bar" style="height: 75%;">
+                                    <div class="chart-bar-label">9月</div>
+                                </div>
+                                <div class="chart-bar" style="height: 60%;">
+                                    <div class="chart-bar-label">10月</div>
+                                </div>
+                                <div class="chart-bar" style="height: 50%;">
+                                    <div class="chart-bar-label">11月</div>
+                                </div>
+                                <div class="chart-bar" style="height: 45%;">
+                                    <div class="chart-bar-label">12月</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ai-insight">
+                            <strong>AI分析:</strong> 7月产量达到峰值，主要得益于优化灌溉和精准施肥。建议在5-8月增加劳动力投入。
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-dollar-sign"></i> 收益成本分析</h3>
+                            <div class="chart-actions">
+                                <button class="chart-btn active">收益</button>
+                                <button class="chart-btn">成本</button>
+                                <button class="chart-btn">利润率</button>
+                            </div>
+                        </div>
+                        <p>各作物收益与成本对比分析</p>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>作物</th>
+                                    <th>收益(万元)</th>
+                                    <th>成本(万元)</th>
+                                    <th>利润率</th>
+                                    <th>趋势</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>玉米</td>
+                                    <td>45.2</td>
+                                    <td>18.5</td>
+                                    <td>59.1%</td>
+                                    <td><span class="trend-indicator trend-up"><i class="fas fa-arrow-up"></i> 5.2%</span></td>
+                                </tr>
+                                <tr>
+                                    <td>西红柿</td>
+                                    <td>38.7</td>
+                                    <td>22.3</td>
+                                    <td>42.4%</td>
+                                    <td><span class="trend-indicator trend-up"><i class="fas fa-arrow-up"></i> 2.1%</span></td>
+                                </tr>
+                                <tr>
+                                    <td>黄瓜</td>
+                                    <td>28.9</td>
+                                    <td>15.6</td>
+                                    <td>46.0%</td>
+                                    <td><span class="trend-indicator trend-stable"><i class="fas fa-minus"></i> 0.3%</span></td>
+                                </tr>
+                                <tr>
+                                    <td>土豆</td>
+                                    <td>32.5</td>
+                                    <td>20.8</td>
+                                    <td>36.0%</td>                                                                      
+                                    <td><span class="trend-indicator trend-down"><i class="fas fa-arrow-down"></i> 1.8%</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="ai-insight">
+                            <strong>AI建议:</strong> 玉米利润率最高且持续上升，建议扩大种植面积。土豆利润率下降，需优化种植成本。
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-tint"></i> 资源使用效率</h3>
+                            <div class="chart-actions">
+                                <button class="chart-btn active">水资源</button>
+                                <button class="chart-btn">肥料</button>
+                                <button class="chart-btn">能源</button>
+                            </div>
+                        </div>
+                        <p>各项资源使用效率与优化空间</p>
+                        <div class="chart-placeholder" style="height: 200px;">
+                            <div style="display: flex; flex-direction: column; gap: 15px; width: 80%;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>灌溉用水</span>
+                                    <div style="width: 60%; background: #e0e0e0; border-radius: 10px; height: 20px;">
+                                        <div style="width: 75%; background: linear-gradient(90deg, var(--primary), var(--ai-purple)); height: 100%; border-radius: 10px;"></div>
+                                    </div>
+                                    <span>75%</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>氮肥使用</span>
+                                    <div style="width: 60%; background: #e0e0e0; border-radius: 10px; height: 20px;">
+                                        <div style="width: 65%; background: linear-gradient(90deg, var(--primary), var(--ai-purple)); height: 100%; border-radius: 10px;"></div>
+                                    </div>
+                                    <span>65%</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>磷肥使用</span>
+                                    <div style="width: 60%; background: #e0e0e0; border-radius: 10px; height: 20px;">
+                                        <div style="width: 58%; background: linear-gradient(90deg, var(--primary), var(--ai-purple)); height: 100%; border-radius: 10px;"></div>
+                                    </div>
+                                    <span>58%</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>电力消耗</span>
+                                    <div style="width: 60%; background: #e0e0e0; border-radius: 10px; height: 20px;">
+                                        <div style="width: 82%; background: linear-gradient(90deg, var(--primary), var(--ai-purple)); height: 100%; border-radius: 10px;"></div>
+                                    </div>
+                                    <span>82%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ai-insight">
+                            <strong>AI优化:</strong> 电力消耗较高，建议优化温室照明和温控系统。磷肥使用效率较低，可调整施肥方案。
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-seedling"></i> 生长环境分析</h3>
+                            <div class="chart-actions">
+                                <button class="chart-btn active">温度</button>
+                                <button class="chart-btn">湿度</button>
+                                <button class="chart-btn">光照</button>
+                            </div>
+                        </div>
+                        <p>作物生长环境参数与产量关联分析</p>
+                        <div class="chart-placeholder" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 3rem; color: var(--primary);">86%</div>
+                                <div>环境适宜度评分</div>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                            <div style="text-align: center; padding: 1rem; background: #f5f5f5; border-radius: 8px;">
+                                <div style="font-size: 1.5rem; color: var(--primary);">25°C</div>
+                                <div>平均温度</div>
+                            </div>
+                            <div style="text-align: center; padding: 1rem; background: #f5f5f5; border-radius: 8px;">
+                                <div style="font-size: 1.5rem; color: var(--primary);">68%</div>
+                                <div>平均湿度</div>
+                            </div>
+                            <div style="text-align: center; padding: 1rem; background: #f5f5f5; border-radius: 8px;">
+                                <div style="font-size: 1.5rem; color: var(--primary);">12h</div>
+                                <div>日均光照</div>
+                            </div>
+                            <div style="text-align: center; padding: 1rem; background: #f5f5f5; border-radius: 8px;">
+                                <div style="font-size: 1.5rem; color: var(--primary);">6.8</div>
+                                <div>土壤pH值</div>
+                            </div>
+                        </div>
+                        <div class="ai-insight">
+                            <strong>AI评估:</strong> 当前生长环境整体优良，温度湿度处于最佳区间。建议维持当前环境参数。
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card" style="margin-top: 2rem;">
+                    <h3><i class="fas fa-lightbulb"></i> AI优化建议汇总</h3>
+                    <p>基于数据分析的智能优化方案</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+                        <div class="ai-insight">
+                            <strong>种植结构优化:</strong> 建议将玉米种植面积从当前的40%提升至50%，土豆面积从25%降低至20%。
+                        </div>
+                        <div class="ai-insight">
+                            <strong>资源分配:</strong> 将节约的灌溉用水重新分配到西红柿种植区，预计可提升产量8%。
+                        </div>
+                        <div class="ai-insight">
+                            <strong>市场策略:</strong> 7-8月是价格高峰期，建议将60%的产量安排在此时间段销售。
+                        </div>
+                        <div class="ai-insight">
+                            <strong>技术投入:</strong> 在黄瓜种植区增加智能温室覆盖，预计可延长产季2个月。
+                        </div>
+                    </div>
+                    <button class="buy-btn" style="background: linear-gradient(135deg, var(--primary), var(--ai-purple)); color: white; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: 600; width: 100%; margin-top: 1.5rem; transition: all 0.3s ease;">
+                        <i class="fas fa-robot"></i> 一键执行优化方案
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 风险报告模态框 -->
+<div id="riskReportModal" class="modal"><div class="modal-content"><div class="modal-header"><h3 id="reportTitle">风险报告</h3><button class="modal-close" onclick="closeRiskModal()">&times;</button></div><div class="modal-body" id="reportBody"></div></div></div>
+
+<!-- 商品选择模态框 -->
+<div id="productSelectModal" class="modal"><div class="modal-content" style="max-width:500px;"><div class="modal-header"><h3>选择评价的商品</h3><button class="modal-close" onclick="closeProductModal()">&times;</button></div><div class="modal-body"><div id="purchasedProductsList"></div></div></div></div>
+
+<!-- 相机模态框（修复版） -->
+<div id="cameraModalExpert" class="camera-modal"><div class="camera-container"><h3 style="color:white;"><i class="fas fa-camera"></i> 拍摄作物照片</h3><div class="camera-preview"><video id="expertVideo" autoplay playsinline style="width:100%; border-radius:20px;"></video><img id="capturedImgExpert" style="display:none; width:100%; border-radius:20px;"></div><div class="camera-controls"><button id="initCameraExpertBtn" class="camera-btn" onclick="initCameraExpert()">📷 启动摄像头</button><button id="captureExpertBtn" class="camera-btn" style="display:none;" onclick="capturePhotoExpert()">拍照</button><button id="retakeExpertBtn" class="camera-btn" style="display:none;" onclick="retakePhotoExpert()">重拍</button><button id="useExpertBtn" class="camera-btn" style="display:none;" onclick="usePhotoExpert()">使用照片</button><button class="camera-btn" onclick="closeCameraExpert()">取消</button></div></div></div>
+<input type="file" id="expertFileUpload" accept="image/*" style="display:none" onchange="handleExpertFileUpload(event)">
+
+   <!-- 拍照模态框 -->
+   <div id="cameraModal" class="camera-modal">
+    <div class="camera-container">
+        <h3 style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+            <i class="fas fa-camera"></i>
+            拍摄作物照片
+        </h3>
+        
+        
+        
+        <div class="camera-controls">
+            <button class="camera-btn" onclick="initCamera()" id="initCameraBtn">
+                <i class="fas fa-play"></i> 启动摄像头
+            </button>
+            <button class="camera-btn" onclick="capturePhoto()" id="captureBtn" style="display: none;">
+                <i class="fas fa-camera"></i> 拍照
+            </button>
+            <button class="camera-btn secondary" onclick="closeCamera()">
+                <i class="fas fa-times"></i> 取消
+            </button>
+            <button class="camera-btn" onclick="retakePhoto()" id="retakeBtn" style="display: none;">
+                <i class="fas fa-redo"></i> 重拍
+            </button>
+            <button class="camera-btn" onclick="usePhoto()" id="useBtn" style="display: none;">
+                <i class="fas fa-check"></i> 使用照片
+            </button>
+        </div>
+        
+        <!-- 备用选项 -->
+       
+    </div>
+</div>
+    <!-- 隐藏的文件上传输入 -->
+    <input type="file" id="fileUpload" accept="image/*" style="display: none;" onchange="handleFileUpload(event)">
+ <script>
+        // 页面切换功能
+        function showPage(pageId) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // 显示选中的页面
+            document.getElementById(pageId).classList.add('active');
+            
+            // 更新侧边栏活动状态
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // 设置当前页面链接为活动状态
+            event.currentTarget.classList.add('active');
+        }
+        
+        // 图片上传处理
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                // 模拟AI分析过程
+                document.querySelector('.analysis-section h3').innerHTML = 'AI分析中...';
+                
+                setTimeout(() => {
+                    document.querySelector('.analysis-section h3').innerHTML = 'AI质量分析结果';
+                    document.querySelector('.score-value').textContent = '85%';
+                    
+                    // 显示成功消息
+                    alert('图片上传成功！AI已完成质量分析。');
+                }, 2000);
+            }
+        }
+        
+        // 设备控制功能
+        function updateIrrigationValue(value) {
+            document.getElementById('irrigationValue').textContent = value + '%';
+        }
+        
+        function updateDurationValue(value) {
+            document.getElementById('durationValue').textContent = value + '分钟';
+        }
+        
+        function updateInspectionValue(value) {
+            document.getElementById('inspectionValue').textContent = value;
+        }
+        
+        function updateTemperatureValue(value) {
+            document.getElementById('temperatureValue').textContent = value + '°C';
+        }
+        
+        function updateHumidityValue(value) {
+            document.getElementById('humidityValue').textContent = value + '%';
+        }
+        
+     
+        // 全局变量
+        let cameraStream = null;
+        let capturedPhoto = null;
+        let currentPhotos = [];
+        let isCameraInitialized = false;
+
+        // 农业知识库
+        const agricultureKnowledge = [
+            {
+                keywords: ['玉米', '叶子', '发黄', '黄叶'],
+                answer: "玉米叶子发黄可能原因：\n1. 氮肥不足 - 补充尿素或复合肥\n2. 水分过多 - 改善排水系统\n3. 病虫害 - 检查是否有玉米螟\n4. 土壤pH异常 - 测试并调节酸碱度\n建议：进行土壤检测，适量追肥，注意排水"
+            },
+            {
+                keywords: ['西红柿', '晚疫病', '病害', '叶子', '斑点'],
+                answer: "西红柿晚疫病防治：\n1. 选择抗病品种\n2. 合理密植，保持通风\n3. 避免连作，实行轮作\n4. 发病初期喷施代森锰锌\n5. 及时清除病叶病果\n注意：雨后及时排水，避免高湿环境"
+            },
+            {
+                keywords: ['水稻', '施肥', '肥料', '营养'],
+                answer: "水稻施肥建议：\n1. 基肥：插秧前施用有机肥和复合肥\n2. 分蘖肥：插秧后7-10天追施尿素\n3. 穗肥：幼穗分化期施用钾肥\n4. 粒肥：抽穗期适量补施\n注意：根据土壤条件和品种调整施肥量"
+            },
+            {
+                keywords: ['黄瓜', '白粉病', '白粉', '叶子', '白色'],
+                answer: "黄瓜白粉病防治：\n1. 选用抗病品种\n2. 合理密植，通风透光\n3. 发病初期喷施嘧菌酯\n4. 生物防治可用枯草芽孢杆菌\n5. 及时摘除病叶\n预防：避免偏施氮肥，增施磷钾肥"
+            },
+            {
+                keywords: ['土壤', '肥力', '改良', '贫瘠'],
+                answer: "提高土壤肥力方法：\n1. 增施有机肥（农家肥、堆肥）\n2. 合理轮作（豆科与非豆科轮作）\n3. 种植绿肥作物\n4. 使用微生物肥料\n5. 保持土壤水分，防止流失\n6. 定期检测土壤养分"
+            }
+        ];
+
+        // 页面切换功能
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            document.getElementById(pageId).classList.add('active');
+            
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            event.currentTarget.classList.add('active');
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 绑定发送按钮
+            document.getElementById('sendButton').addEventListener('click', sendMessage);
+            document.getElementById('userInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // 加载保存的照片
+            loadSavedPhotos();
+            
+            // 显示欢迎消息
+            setTimeout(() => {
+                addMessage("我已经准备好为您分析作物照片。请拍摄或上传照片，然后告诉我您的问题。", 'ai');
+            }, 500);
+        });
+
+        // 发送消息
+        function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const message = userInput.value.trim();
+            
+            if (message === '') return;
+            
+            // 添加用户消息
+            addMessage(message, 'user');
+            userInput.value = '';
+            
+            // 显示正在输入指示器
+            showTypingIndicator();
+            
+            // 模拟AI处理时间
+            setTimeout(() => {
+                removeTypingIndicator();
+                
+                // 生成AI回复
+                const aiResponse = generateAIResponse(message);
+                addMessage(aiResponse, 'ai');
+                
+                // 如果有照片，添加照片分析
+                if (currentPhotos.length > 0) {
+                    setTimeout(() => {
+                        addMessage(generatePhotoAnalysis(message), 'ai');
+                    }, 500);
+                }
+                
+                // 滚动到底部
+                scrollToBottom();
+            }, 1500 + Math.random() * 1000);
+        }
+
+        // 添加消息到聊天窗口
+        function addMessage(text, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            
+            if (sender === 'user') {
+                messageDiv.classList.add('message', 'user-message');
+                messageDiv.textContent = text;
+            } else {
+                messageDiv.classList.add('message', 'ai-message');
+                messageDiv.innerHTML = formatResponse(text);
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        // 添加照片消息
+        function addPhotoMessage(photoData, photoName) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', 'photo-message');
+            messageDiv.innerHTML = `
+                <img src="${photoData}" alt="作物照片">
+                <div class="photo-info">${photoName}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+            
+            // 添加AI确认消息
+            setTimeout(() => {
+                addMessage(`已收到照片"${photoName}"，请描述您想了解的问题。`, 'ai');
+            }, 300);
+        }
+
+        // 格式化响应文本
+        function formatResponse(text) {
+            // 将数字列表项换行
+            text = text.replace(/(\d\.|\d\))/g, '<br>$1');
+            // 加粗重要信息
+            text = text.replace(/(原因|措施|建议|注意|方案|步骤):/g, '<strong>$1:</strong>');
+            return text;
+        }
+
+        // 显示正在输入指示器
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = '<span></span><span></span><span></span>';
+            chatMessages.appendChild(typingDiv);
+            scrollToBottom();
+        }
+
+        // 移除正在输入指示器
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // 生成AI回复
+        function generateAIResponse(userMessage) {
+            const lowerMessage = userMessage.toLowerCase();
+            
+            // 检查是否匹配知识库
+            for (const knowledge of agricultureKnowledge) {
+                for (const keyword of knowledge.keywords) {
+                    if (lowerMessage.includes(keyword)) {
+                        return knowledge.answer;
+                    }
+                }
+            }
+            
+            // 根据关键词生成回复
+            if (currentPhotos.length === 0) {
+                if (lowerMessage.includes('照片') || lowerMessage.includes('图片')) {
+                    return "请先拍摄或上传作物照片，这样我可以更准确地分析问题。点击左侧的'拍照分析'按钮开始。";
+                }
+            }
+            
+            if (lowerMessage.includes('你好') || lowerMessage.includes('您好')) {
+                return "您好！我是AI农业专家，很高兴为您服务。请告诉我您遇到的农业问题，或者上传作物照片进行分析。";
+            }
+            
+            if (lowerMessage.includes('谢谢') || lowerMessage.includes('感谢')) {
+                return "不客气！如果还有其他问题，随时问我。记得可以上传照片让我更准确地分析作物状况。";
+            }
+            
+            if (lowerMessage.includes('病') || lowerMessage.includes('虫') || lowerMessage.includes('害')) {
+                if (currentPhotos.length > 0) {
+                    return generateDiseaseAnalysis();
+                } else {
+                    return "要准确诊断病虫害，最好能提供作物照片。您可以描述一下具体症状：叶子颜色、斑点形状、发生部位等。";
+                }
+            }
+            
+            if (lowerMessage.includes('肥') || lowerMessage.includes('施肥') || lowerMessage.includes('营养')) {
+                return "施肥建议：\n1) 先进行土壤检测了解养分状况\n2) 根据不同作物生长阶段调整施肥方案\n3) 有机肥与化肥结合使用\n4) 注意施肥时间和方法\n\n您具体种植什么作物？我可以提供更针对性的建议。";
+            }
+            
+            if (lowerMessage.includes('水') || lowerMessage.includes('灌溉') || lowerMessage.includes('浇水')) {
+                return "灌溉建议：\n1) 根据作物需水规律和生长阶段调整\n2) 观察土壤湿度，避免过干过湿\n3) 采用滴灌或喷灌等节水技术\n4) 结合天气预报合理安排灌溉时间";
+            }
+            
+            if (lowerMessage.includes('价格') || lowerMessage.includes('市场') || lowerMessage.includes('销售')) {
+                return "市场分析：\n1) 当前蔬菜价格稳中有升\n2) 西红柿、黄瓜需求旺盛\n3) 建议适时采收，错峰销售\n4) 可考虑电商渠道增加销路\n\n需要具体作物的市场分析吗？";
+            }
+            
+            // 默认回复
+            return "感谢您的提问！为了更好地帮助您，建议：\n1) 提供更详细的问题描述\n2) 上传相关作物照片\n3) 说明具体作物品种和生长阶段\n4) 描述当地气候和土壤条件\n\n这样我可以给出更精准的分析和建议。";
+        }
+
+        // 生成病害分析
+        function generateDiseaseAnalysis() {
+            const analyses = [
+                "根据照片分析，这可能是一种真菌性病害。建议：\n1) 及时移除病叶病果\n2) 喷施多菌灵或代森锰锌\n3) 改善通风透光条件\n4) 避免过度浇水",
+                "照片显示可能是细菌性病害症状。建议：\n1) 使用农用链霉素或春雷霉素\n2) 加强田间管理\n3) 避免伤口感染\n4) 实行轮作制度",
+                "分析认为是病毒病迹象。建议：\n1) 防治传毒媒介（蚜虫、粉虱）\n2) 拔除病株减少毒源\n3) 选用抗病品种\n4) 加强栽培管理提高抗性"
+            ];
+            
+            return analyses[Math.floor(Math.random() * analyses.length)];
+        }
+
+        // 生成照片分析
+        function generatePhotoAnalysis(question) {
+            const analyses = [
+                "🔍 **照片分析报告**\n\n基于上传的照片，我发现：\n\n✅ 作物生长基本正常\n✅ 叶片颜色健康\n⚠️ 少数叶片有轻微斑点\n💡 建议定期观察，如症状扩大及时处理",
+                "🔍 **照片诊断结果**\n\n照片分析显示：\n\n✅ 植株结构良好\n⚠️ 发现早期病害迹象\n📊 病害程度：轻度\n💊 建议预防性喷施生物农药",
+                "🔍 **生长状况评估**\n\n根据照片分析：\n\n✅ 株高正常\n✅ 叶片伸展良好\n⚠️ 需注意营养平衡\n💧 建议调整灌溉频率"
+            ];
+            
+            return analyses[Math.floor(Math.random() * analyses.length)];
+        }
+
+        // 打开摄像头
+        function openCamera() {
+            const modal = document.getElementById('cameraModal');
+            modal.style.display = 'flex';
+            resetCameraUI();
+        }
+
+        // 关闭摄像头
+        function closeCamera() {
+            const modal = document.getElementById('cameraModal');
+            modal.style.display = 'none';
+            stopCamera();
+        }
+
+        // 重置相机UI
+        function resetCameraUI() {
+            const placeholder = document.getElementById('cameraPlaceholder');
+            const video = document.getElementById('cameraVideo');
+            const status = document.getElementById('cameraStatus');
+            
+            placeholder.style.display = 'flex';
+            video.style.display = 'none';
+            status.style.display = 'none';
+            
+            document.getElementById('initCameraBtn').style.display = 'block';
+            document.getElementById('captureBtn').style.display = 'none';
+            document.getElementById('retakeBtn').style.display = 'none';
+            document.getElementById('useBtn').style.display = 'none';
+            
+            capturedPhoto = null;
+            isCameraInitialized = false;
+        }
+
+        // 初始化摄像头
+        async function initCamera() {
+            const status = document.getElementById('cameraStatus');
+            const placeholder = document.getElementById('cameraPlaceholder');
+            const video = document.getElementById('cameraVideo');
+            
+            try {
+                status.textContent = '正在请求摄像头权限...';
+                status.className = 'camera-status warning';
+                status.style.display = 'block';
+                
+                // 获取摄像头权限
+                cameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: 'environment',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false
+                });
+                
+                // 显示视频流
+                video.srcObject = cameraStream;
+                video.style.display = 'block';
+                placeholder.style.display = 'none';
+                
+                // 更新UI
+                document.getElementById('initCameraBtn').style.display = 'none';
+                document.getElementById('captureBtn').style.display = 'block';
+                
+                status.textContent = '摄像头就绪，点击拍照按钮拍摄照片';
+                status.className = 'camera-status success';
+                isCameraInitialized = true;
+                
+            } catch (error) {
+                console.error('摄像头启动失败:', error);
+                handleCameraError(error);
+            }
+        }
+
+        // 处理摄像头错误
+        function handleCameraError(error) {
+            const status = document.getElementById('cameraStatus');
+            const placeholder = document.getElementById('cameraPlaceholder');
+            
+            let errorMessage = '摄像头启动失败: ';
+            
+            if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+                errorMessage = '请允许摄像头权限访问';
+            } else if (error.name === 'NotFoundError' || error.name === 'DevicesNotFoundError') {
+                errorMessage = '未找到摄像头设备';
+            } else if (error.name === 'NotReadableError' || error.name === 'TrackStartError') {
+                errorMessage = '摄像头被其他程序占用';
+            } else {
+                errorMessage += error.message;
+            }
+            
+            status.textContent = errorMessage;
+            status.className = 'camera-status error';
+            status.style.display = 'block';
+            
+            placeholder.innerHTML = `
+                <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #ff9800; margin-bottom: 1rem;"></i>
+                <div style="color: white;">${errorMessage}</div>
+                <button onclick="uploadPhotoFromModal()" style="margin-top: 1rem; padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    <i class="fas fa-upload"></i> 改用上传照片
+                </button>
+            `;
+        }
+
+        // 停止摄像头
+        function stopCamera() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+            
+            const video = document.getElementById('cameraVideo');
+            video.srcObject = null;
+        }
+
+        // 拍照
+        function capturePhoto() {
+            if (!isCameraInitialized) return;
+            
+            const video = document.getElementById('cameraVideo');
+            const canvas = document.getElementById('cameraCanvas');
+            const preview = document.getElementById('cameraPlaceholder');
+            const status = document.getElementById('cameraStatus');
+            
+            try {
+                // 设置画布尺寸
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                
+                // 绘制视频帧到画布
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                // 获取照片数据
+                capturedPhoto = canvas.toDataURL('image/jpeg', 0.9);
+                
+                // 显示预览
+                preview.innerHTML = `<img src="${capturedPhoto}" alt="拍摄的照片" style="width: 100%; height: 100%; object-fit: contain;">`;
+                preview.style.display = 'flex';
+                
+                // 切换按钮
+                document.getElementById('captureBtn').style.display = 'none';
+                document.getElementById('retakeBtn').style.display = 'block';
+                document.getElementById('useBtn').style.display = 'block';
+                
+                status.textContent = '拍照成功！点击"使用照片"添加到聊天';
+                status.className = 'camera-status success';
+                
+            } catch (error) {
+                console.error('拍照失败:', error);
+                status.textContent = '拍照失败，请重试';
+                status.className = 'camera-status error';
+            }
+        }
+
+        // 重拍
+        function retakePhoto() {
+            const placeholder = document.getElementById('cameraPlaceholder');
+            const video = document.getElementById('cameraVideo');
+            
+            placeholder.innerHTML = `
+                <i class="fas fa-camera" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                <div style="color: white;">准备重新拍摄</div>
+            `;
+            video.style.display = 'block';
+            
+            document.getElementById('captureBtn').style.display = 'block';
+            document.getElementById('retakeBtn').style.display = 'none';
+            document.getElementById('useBtn').style.display = 'none';
+            
+            capturedPhoto = null;
+        }
+
+        // 使用拍摄的照片
+        function usePhoto() {
+            if (!capturedPhoto) return;
+            
+            const photoName = '作物照片_' + new Date().toLocaleTimeString('zh-CN', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            
+            // 添加到照片列表
+            currentPhotos.push({
+                dataUrl: capturedPhoto,
+                name: photoName,
+                timestamp: new Date()
+            });
+            
+            // 保存到本地存储
+            savePhotos();
+            
+            // 添加到聊天
+            addPhotoMessage(capturedPhoto, photoName);
+            
+            // 关闭相机模态框
+            closeCamera();
+            
+            // 显示成功消息
+            showStatus('照片已成功添加到聊天！', 'success');
+        }
+
+        // 从模态框上传照片
+        function uploadPhotoFromModal() {
+            closeCamera();
+            setTimeout(() => {
+                uploadPhoto();
+            }, 300);
+        }
+
+        // 上传照片
+        function uploadPhoto() {
+            document.getElementById('fileUpload').click();
+        }
+
+        // 处理文件上传
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.match('image.*')) {
+                showStatus('请选择图片文件！', 'error');
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) {
+                showStatus('图片文件太大，请选择小于5MB的图片！', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const photoName = file.name.replace(/\.[^/.]+$/, '') || '上传照片';
+                
+                // 添加到照片列表
+                currentPhotos.push({
+                    dataUrl: e.target.result,
+                    name: photoName,
+                    timestamp: new Date()
+                });
+                
+                // 保存到本地存储
+                savePhotos();
+                
+                // 添加到聊天
+                addPhotoMessage(e.target.result, photoName);
+                
+                showStatus('照片上传成功！', 'success');
+            };
+            
+            reader.onerror = function() {
+                showStatus('图片读取失败，请重试！', 'error');
+            };
+            
+            reader.readAsDataURL(file);
+            
+            // 重置文件输入
+            event.target.value = '';
+        }
+
+        // 加载保存的照片
+        function loadSavedPhotos() {
+            const saved = localStorage.getItem('agricultureChatPhotos');
+            if (saved) {
+                try {
+                    currentPhotos = JSON.parse(saved);
+                } catch (e) {
+                    currentPhotos = [];
+                }
+            }
+        }
+
+        // 保存照片到本地存储
+        function savePhotos() {
+            localStorage.setItem('agricultureChatPhotos', JSON.stringify(currentPhotos));
+        }
+
+        // 显示状态消息
+        function showStatus(message, type) {
+            const status = document.createElement('div');
+            status.className = `camera-status ${type}`;
+            status.textContent = message;
+            status.style.position = 'fixed';
+            status.style.top = '20px';
+            status.style.right = '20px';
+            status.style.zIndex = '1000';
+            status.style.padding = '10px 20px';
+            status.style.borderRadius = '5px';
+            
+            document.body.appendChild(status);
+            
+            setTimeout(() => {
+                status.remove();
+            }, 3000);
+        }
+
+        // 滚动到底部
+        function scrollToBottom() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置默认活动页面
+            showPage('dashboard');
+        });
+         // 全局数据
+    let reviews = JSON.parse(localStorage.getItem('farmReviews') || '[]');
+    let selectedProductForReview = null;
+    let currentRating = 5;
+    // 商品库
+    const productsForSale = [
+        { id: 1, name: "有机西红柿", farm: "张大山农场", price: "¥2.98/公斤", img: "https://picsum.photos/id/108/200/150" },
+        { id: 2, name: "新鲜玉米", farm: "李庄合作社", price: "¥2.2/公斤", img: "https://picsum.photos/id/155/200/150" },
+        { id: 3, name: "绿色黄瓜", farm: "王家庄农场", price: "¥3.5/公斤", img: "https://picsum.photos/id/127/200/150" },
+        { id: 4, name: "生态大米", farm: "稻田科技", price: "¥20/公斤", img: "https://picsum.photos/id/104/200/150" }
+    ];
+
+    function renderMarketplace() {
+        const container = document.getElementById('marketGrid');
+        if(container) container.innerHTML = productsForSale.map(p => `<div class="product-card"><div class="product-image" style="background-image:url('${p.img}')"></div><div class="product-info"><h4>${p.name}</h4><p>${p.farm}</p><div class="product-price">${p.price}</div><button class="buy-btn" onclick="alert('购买演示：${p.name}')">购买</button></div></div>`).join('');
+    }
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        if(pageId === 'marketplace') renderMarketplace();
+        if(pageId === 'review-page') renderReviewsList();
+        if(pageId === 'risk-management') renderRiskCards();
+    }
+    window.showPage = showPage;
+
+    // ================= 风险报告弹窗 =================
+    const riskData = {
+        wind: { title: "强风预警详细报告", content: "<strong>气象数据：</strong> 未来48小时阵风9级，风速18-22m/s。<br><strong>影响评估：</strong> 高杆作物倒伏风险增加45%。<br><strong>AI建议：</strong> 立即加固大棚，无人机返库，暂停高空作业。建议喷洒抗倒伏制剂。" },
+        heat: { title: "高温预警报告", content: "<strong>持续高温38°C</strong>，叶菜类蒸腾加剧。<br>建议：增加早晚灌溉，启用遮阳网，叶面喷施磷酸二氢钾提高抗热性。" },
+        pest: { title: "病虫害预警地图", content: "<strong>蚜虫风险区域</strong>：南侧3号田块。<br>释放瓢虫300只，喷洒苦参碱。已标记GPS坐标。" },
+        drought: { title: "干旱风险报告", content: "未来15天降雨量减少40%。<br>水资源调度：启用滴灌，建议覆盖秸秆保墒，调整种植计划减少高耗水作物。" }
+    };
+    function showRiskDetailReport(type) {
+        const data = riskData[type] || riskData.wind;
+        document.getElementById('reportTitle').innerHTML = `<i class="fas fa-file-alt"></i> ${data.title}`;
+        document.getElementById('reportBody').innerHTML = `<div class="ai-insight" style="background:#f8f9fa;">${data.content}</div><br><button class="action-btn primary" onclick="alert('防护措施已启动')">一键执行防护</button>`;
+        document.getElementById('riskReportModal').style.display = 'flex';
+    }
+    function closeRiskModal() { document.getElementById('riskReportModal').style.display = 'none'; }
+    window.showRiskDetailReport = showRiskDetailReport; window.closeRiskModal = closeRiskModal;
+
+    function renderRiskCards() {
+        const container = document.getElementById('riskContainer');
+        if(!container) return;
+        container.innerHTML = `
+            <div class="risk-card high"><div class="risk-header"><h3><i class="fas fa-wind"></i> 强风预警</h3><div class="risk-level high">高风险</div></div><p>48小时后7-8级强风</p><div class="risk-actions"><button class="action-btn primary" onclick="showRiskDetailReport('wind')">查看详细报告</button><button class="action-btn secondary">一键防护</button></div></div>
+            <div class="risk-card medium"><div class="risk-header"><h3><i class="fas fa-temperature-high"></i> 高温预警</h3><div class="risk-level medium">中风险</div></div><p>持续38°C高温</p><div class="risk-actions"><button class="action-btn primary" onclick="showRiskDetailReport('heat')">查看详细报告</button></div></div>
+            <div class="risk-card low"><div class="risk-header"><h3><i class="fas fa-bug"></i> 病虫害预警</h3><div class="risk-level low">低风险</div></div><p>周边蚜虫增加</p><div class="risk-actions"><button class="action-btn primary" onclick="showRiskDetailReport('pest')">虫情地图</button></div></div>
+            <div class="risk-card medium"><div class="risk-header"><h3><i class="fas fa-tint"></i> 干旱预警</h3><div class="risk-level medium">中风险</div></div><p>降雨减少40%</p><div class="risk-actions"><button class="action-btn primary" onclick="showRiskDetailReport('drought')">水资源报告</button></div></div>
+        `;
+    }
+
+    // ========== 评价系统完整逻辑 ==========
+    function openProductSelectModal() {
+        const modal = document.getElementById('productSelectModal');
+        const listDiv = document.getElementById('purchasedProductsList');
+        listDiv.innerHTML = productsForSale.map(p => `<div style="display:flex; justify-content:space-between; align-items:center; padding:12px; border-bottom:1px solid #eee;"><div><strong>${p.name}</strong><br>${p.farm}</div><button class="buy-btn" onclick="selectProductForReview(${p.id}, '${p.name}', '${p.farm}')">选择</button></div>`).join('');
+        modal.style.display = 'flex';
+    }
+    function closeProductModal() { document.getElementById('productSelectModal').style.display = 'none'; }
+    window.openProductSelectModal = openProductSelectModal; window.closeProductModal = closeProductModal;
+
+    function selectProductForReview(id, name, farm) {
+        selectedProductForReview = { id, name, farm };
+        document.getElementById('selectedProductPreview').innerHTML = `<i class="fas fa-check-circle"></i> 已选择商品: <strong>${name}</strong> (${farm})`;
+        document.getElementById('selectedProductPreview').style.display = 'block';
+        document.getElementById('selectedProductHint').innerHTML = `✅ 当前评价商品: ${name}`;
+        closeProductModal();
+    }
+    window.selectProductForReview = selectProductForReview;
+
+    // 星星交互
+    function initStars() {
+        const stars = document.querySelectorAll('#ratingStars .star');
+        stars.forEach(star => {
+            star.addEventListener('click', function() { currentRating = parseInt(this.dataset.val); updateStars(currentRating); });
+        });
+        updateStars(5);
+    }
+    function updateStars(rating) {
+        document.querySelectorAll('#ratingStars .star').forEach(star => { if(parseInt(star.dataset.val) <= rating) star.classList.add('active'); else star.classList.remove('active'); });
+    }
+    document.getElementById('submitFinalReview')?.addEventListener('click', () => {
+        if(!selectedProductForReview) { alert('请先选择要评价的商品'); return; }
+        const comment = document.getElementById('reviewComment').value.trim();
+        if(!comment) { alert('请填写评价内容'); return; }
+        const newReview = { id: Date.now(), product: selectedProductForReview.name, farm: selectedProductForReview.farm, rating: currentRating, comment: comment, date: new Date().toLocaleString() };
+        reviews.unshift(newReview);
+        localStorage.setItem('farmReviews', JSON.stringify(reviews));
+        renderReviewsList();
+        document.getElementById('reviewComment').value = '';
+        selectedProductForReview = null;
+        document.getElementById('selectedProductPreview').style.display = 'none';
+        document.getElementById('selectedProductHint').innerHTML = '📦 点击选择已购商品';
+        alert('评价提交成功！获得50积分');
+    });
+    function renderReviewsList() {
+        const container = document.getElementById('reviewsListContainer');
+        if(!container) return;
+        if(reviews.length === 0) { container.innerHTML = '<div class="ai-insight">暂无评价，成为第一个评价的用户~</div>'; return; }
+        container.innerHTML = reviews.map(r => `<div style="background:#f9f9f9; border-radius:24px; padding:12px; margin-bottom:12px;"><div><strong>${r.product}</strong> (${r.farm})</div><div>${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div><p>${r.comment}</p><small>${r.date}</small></div>`).join('');
+    }
+
+    // ========== AI专家 + 相机修复 (完全可用) ==========
+    let expertStream = null;
+    let capturedPhotoData = null;
+    function openCameraExpert() { document.getElementById('cameraModalExpert').style.display = 'flex'; resetExpertCameraUI(); }
+    function closeCameraExpert() { if(expertStream) expertStream.getTracks().forEach(t=>t.stop()); document.getElementById('cameraModalExpert').style.display = 'none'; }
+    function resetExpertCameraUI() {
+        const video = document.getElementById('expertVideo'); const img = document.getElementById('capturedImgExpert');
+        video.style.display = 'block'; img.style.display = 'none'; capturedPhotoData = null;
+        document.getElementById('initCameraExpertBtn').style.display = 'inline-flex';
+        document.getElementById('captureExpertBtn').style.display = 'none';
+        document.getElementById('retakeExpertBtn').style.display = 'none';
+        document.getElementById('useExpertBtn').style.display = 'none';
+    }
+    async function initCameraExpert() {
+        try {
+            if(expertStream) expertStream.getTracks().forEach(t=>t.stop());
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+            expertStream = stream;
+            const video = document.getElementById('expertVideo');
+            video.srcObject = stream;
+            await video.play();
+            document.getElementById('initCameraExpertBtn').style.display = 'none';
+            document.getElementById('captureExpertBtn').style.display = 'inline-flex';
+        } catch(err) { alert('无法访问相机: '+err.message); }
+    }
+    function capturePhotoExpert() {
+        const video = document.getElementById('expertVideo');
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        capturedPhotoData = canvas.toDataURL('image/jpeg');
+        const img = document.getElementById('capturedImgExpert');
+        img.src = capturedPhotoData;
+        video.style.display = 'none';
+        img.style.display = 'block';
+        document.getElementById('captureExpertBtn').style.display = 'none';
+        document.getElementById('retakeExpertBtn').style.display = 'inline-flex';
+        document.getElementById('useExpertBtn').style.display = 'inline-flex';
+    }
+    function retakePhotoExpert() {
+        const video = document.getElementById('expertVideo'); const img = document.getElementById('capturedImgExpert');
+        video.style.display = 'block'; img.style.display = 'none';
+        capturedPhotoData = null;
+        document.getElementById('captureExpertBtn').style.display = 'inline-flex';
+        document.getElementById('retakeExpertBtn').style.display = 'none';
+        document.getElementById('useExpertBtn').style.display = 'none';
+    }
+    
+    </script>
+   
+    
+</body>
+</html>
