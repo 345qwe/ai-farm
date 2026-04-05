@@ -1901,7 +1901,16 @@ input:checked + .slider-toggle:before {
             .main-content { margin-left: 90px; padding: 1rem; }
             .review-grid { grid-template-columns: 1fr; }
         }
-   
+      .star {
+    cursor: pointer;
+    color: #ddd;
+    font-size: 2rem;
+    transition: all 0.2s;
+}
+.star.active {
+    color: #ffb300;
+    text-shadow: 0 0 8px rgba(255, 180, 0, 0.5);
+}
       
     </style>
  
@@ -2433,20 +2442,23 @@ input:checked + .slider-toggle:before {
                 </div>
             </div>
         <!-- 评价页面 (完善JS+提交存储) -->
-        <div id="review-page" class="page">
-            <div class="page-header"><h2><i class="fas fa-comment-dots"></i> 农产品真实评价</h2><span class="ai-badge">口碑分享</span></div>
+       <div id="review-page" class="page">
+            <div class="page-header"><h2><i class="fas fa-star"></i> 农产品真实评价 <span class="ai-badge">口碑分享</span></h2></div>
             <div class="review-grid">
                 <div class="review-form-card">
                     <h3>撰写评价</h3>
                     <div id="selectedProductHint" style="background:#eff5ea; border-radius:40px; padding:12px; text-align:center; cursor:pointer;" onclick="openProductSelectModal()">📦 点击选择已购商品</div>
-                    <div id="selectedProductPreview" style="display:none; background:#f9fbf6; border-radius:24px; padding:12px; margin:12px 0;"></div>
-                    <div class="stars" id="ratingStars"><span class="star" data-val="1">★</span><span class="star" data-val="2">★</span><span class="star" data-val="3">★</span><span class="star" data-val="4">★</span><span class="star" data-val="5">★</span></div>
-                    <textarea id="reviewComment" rows="3" placeholder="分享您的真实体验，口感、新鲜度..." style="width:100%; border-radius:28px; border:1px solid #ccc; padding:12px;"></textarea>
+                    <div id="selectedProductPreview" style="display:none; margin:12px 0;"></div>
+                    <div class="stars" id="ratingStars">
+                        <span class="star" data-val="1">★</span><span class="star" data-val="2">★</span><span class="star" data-val="3">★</span><span class="star" data-val="4">★</span><span class="star" data-val="5">★</span>
+                    </div>
+                    <textarea id="reviewComment" rows="3" placeholder="分享您的真实体验..." style="width:100%; border-radius:28px; padding:12px; border:1px solid #ccc;"></textarea>
                     <button class="buy-btn" id="submitFinalReview" style="width:100%; margin-top:12px;">✅ 提交评价 + 获得积分</button>
-                </div>
+                    </div>
                 <div class="recent-reviews-card"><h3>最新用户评价</h3><div id="reviewsListContainer" style="max-height:460px; overflow-y:auto;"></div></div>
             </div>
         </div>
+
 
   
     <!-- AI风险预警页面（完整版，带详细报告弹窗） -->
@@ -3610,6 +3622,145 @@ input:checked + .slider-toggle:before {
         this.style.background = `linear-gradient(90deg, #2e7d32 0%, #2e7d32 ${percent}%, #e0e0e0 ${percent}%, #e0e0e0 100%)`;
     });
 });
+     // ============================================================
+// 农产品评价页面 - 点星星交互 JavaScript 代码
+// 功能：点击星星选择评分、实时高亮、获取当前分值
+// 适配您提供的 HTML 结构（#ratingStars 容器内的 .star 元素）
+// ============================================================
+
+(function() {
+    // 等待 DOM 加载完成
+    document.addEventListener('DOMContentLoaded', function() {
+        // ---------- 获取元素 ----------
+        const starContainer = document.getElementById('ratingStars');
+        // 如果没有找到容器，则退出（防止报错）
+        if (!starContainer) {
+            console.warn('未找到 id="ratingStars" 的容器');
+            return;
+        }
+        
+        // 获取所有星星元素
+        const stars = starContainer.querySelectorAll('.star');
+        // 当前选中的评分（0-5，0表示未选中）
+        let currentRating = 0;
+        
+        // 可选：创建一个隐藏的输入框来存储评分值，方便表单提交时获取
+        // 如果页面上已有该元素则复用，否则动态创建
+        let ratingInput = document.getElementById('ratingValue');
+        if (!ratingInput) {
+            ratingInput = document.createElement('input');
+            ratingInput.type = 'hidden';
+            ratingInput.id = 'ratingValue';
+            ratingInput.name = 'ratingValue';
+            starContainer.parentNode.appendChild(ratingInput);
+        }
+        
+        // ---------- 辅助函数：更新星星高亮 ----------
+        // 根据评分值高亮星星：评分 <= 星星分值 的星星高亮
+        function highlightStars(rating) {
+            stars.forEach((star, index) => {
+                // star 的 data-val 属性存储分值（1-5）
+                const starValue = parseInt(star.getAttribute('data-val'), 10);
+                if (starValue <= rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+        
+        // ---------- 更新评分显示（如果有显示元素）----------
+        // 可选：在页面某处显示当前评分，如果没有则跳过
+        function updateRatingDisplay(rating) {
+            const ratingDisplay = document.getElementById('currentRatingDisplay');
+            if (ratingDisplay) {
+                ratingDisplay.textContent = rating;
+            }
+            // 更新隐藏输入框的值
+            if (ratingInput) {
+                ratingInput.value = rating;
+            }
+        }
+        
+        // ---------- 设置评分（核心方法）----------
+        function setRating(rating) {
+            // 限制范围 0-5
+            if (rating < 0) rating = 0;
+            if (rating > 5) rating = 5;
+            currentRating = rating;
+            // 更新星星高亮
+            highlightStars(currentRating);
+            // 更新显示
+            updateRatingDisplay(currentRating);
+            // 可选：控制台输出，便于调试
+            console.log('当前评分已设置为: ' + currentRating + ' 星');
+        }
+        
+        // ---------- 获取当前评分（供外部调用）----------
+        window.getCurrentRating = function() {
+            return currentRating;
+        };
+        
+        // ---------- 重置评分（供外部调用，如提交后清空）----------
+        window.resetRating = function() {
+            setRating(0);
+        };
+        
+        // ---------- 星星点击事件处理 ----------
+        function handleStarClick(star) {
+            const clickedValue = parseInt(star.getAttribute('data-val'), 10);
+            // 点击后设置评分
+            setRating(clickedValue);
+        }
+        
+        // ---------- 鼠标悬停预览效果（可选，增强交互）----------
+        // 鼠标移入：临时高亮到当前悬停的星星
+        function handleMouseEnter(star) {
+            const hoverValue = parseInt(star.getAttribute('data-val'), 10);
+            // 临时高亮（不改变 currentRating）
+            stars.forEach(s => {
+                const val = parseInt(s.getAttribute('data-val'), 10);
+                if (val <= hoverValue) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+        }
+        
+        // 鼠标移出：恢复为当前实际评分的高亮
+        function handleMouseLeave() {
+            highlightStars(currentRating);
+        }
+        
+        // ---------- 绑定事件 ----------
+        function bindEvents() {
+            stars.forEach(star => {
+                // 点击事件
+                star.addEventListener('click', () => handleStarClick(star));
+                // 悬停效果（增强交互，可选）
+                star.addEventListener('mouseenter', () => handleMouseEnter(star));
+                star.addEventListener('mouseleave', handleMouseLeave);
+            });
+        }
+        
+        // ---------- 初始化 ----------
+        function init() {
+            // 确保每个星星都有 data-val 属性
+            stars.forEach((star, idx) => {
+                if (!star.hasAttribute('data-val')) {
+                    star.setAttribute('data-val', idx + 1);
+                }
+            });
+            // 初始状态：0星，无高亮
+            setRating(0);
+            bindEvents();
+        }
+        
+        // 启动
+        init();
+    });
+})();
     </script>
    
     
